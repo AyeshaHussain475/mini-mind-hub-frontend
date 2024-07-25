@@ -9,8 +9,16 @@ import leopard from "../assets/Leopard.webp";
 import cat from "../assets/cat.jpg";
 import axios from "../axios";
 import { toast } from "react-toastify";
+import { useApiData } from "../Hooks/useApiData";
 
 const Phonics = () => {
+  const animalQuery = useApiData("/animal/media", "Failed to fetch animals");
+
+  const [disable, setDisable] = useState(false);
+  const [name, setName] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
+  const [soundUrl, setSoundUrl] = useState("");
+
   const postMedia = async () => {
     const formData = new FormData();
 
@@ -22,43 +30,25 @@ const Phonics = () => {
       const result = await axios.post("/animal/media", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      toast.success("Media is uploaded successfully");
-      // getMedia();
-      console.log(result);
+      if (result.status === 201) {
+        toast.success("Media is uploaded successfully");
+        animalQuery.refetch();
+      } else {
+        toast.error("Failed to upload media. Try again!");
+      }
     } catch (error) {
       toast.error("Media is failed to upload");
       console.log(error);
     }
   };
 
-  const getMedia = async () => {
-    const res = await axios.get("/animal/media");
-    console.log(res.data);
-    setImages(Array.isArray(res.data) ? res.data : []);
-  };
-
-  useEffect(() => {
-    getMedia();
-  }, []);
-
   useEffect(() => {
     AOS.init();
   }, []);
-  const animalImages = [tiger, cheetah, leopard, goat, cat];
-
-  const [disable, setDisable] = useState(false);
-  const [name, setName] = useState("");
-  const [imageUrl, setImageUrl] = useState(null);
-  const [soundUrl, setSoundUrl] = useState("");
-  const [images, setImages] = useState([]);
 
   const toggleForm = () => {
     setDisable(!disable);
   };
-
-  // const onImageChange = (e) => {
-  //   console.log(e.target.files[0]);
-  // };
 
   return (
     <Box>
@@ -97,7 +87,7 @@ const Phonics = () => {
                   id="imageUrl"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setImageUrl(e.target.files)}
+                  onChange={(e) => setImageUrl(e.target.files[0])}
                 />
 
                 <label>Sound</label>
@@ -114,11 +104,12 @@ const Phonics = () => {
         </Box>
       </Box>
       <Stack direction="row" spacing={2}>
-        {images.map((data) => {
-          const url = `http://localhost:7000/mini/images/${data.imageUrl}`;
+        {animalQuery.isLoading && "loading data..."}
+        {animalQuery.data?.map((animal) => {
+          const url = `http://localhost:7000/mini/images/${animal.imageUrl}`;
           return (
             <img
-              key={data.id}
+              key={animal._id}
               src={url}
               style={{ height: 260 }}
               data-aos="zoom-in"
