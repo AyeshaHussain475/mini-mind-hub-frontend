@@ -23,7 +23,7 @@ const Phonics = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Media is uploaded successfully");
-      getMedia();
+      // getMedia();
       console.log(result);
     } catch (error) {
       toast.error("Media is failed to upload");
@@ -34,7 +34,7 @@ const Phonics = () => {
   const getMedia = async () => {
     const res = await axios.get("/animal/media");
     console.log(res.data);
-    setImages(res.data);
+    setImages(Array.isArray(res.data) ? res.data : []);
   };
 
   useEffect(() => {
@@ -113,15 +113,20 @@ const Phonics = () => {
           </Grid>
         </Box>
       </Box>
-
       <Stack direction="row" spacing={2}>
-        {animalImages.map((img) => (
-          <img src={img} style={{ height: "278px" }} data-aos="zoom-in" />
-        ))}
+        {images.map((data) => {
+          const url = `http://localhost:7000/mini/images/${data.imageUrl}`;
+          return (
+            <img
+              key={data.id}
+              src={url}
+              style={{ height: 260 }}
+              data-aos="zoom-in"
+              alt="Image"
+            />
+          );
+        })}
       </Stack>
-      {images.map((data) => {
-        return <img key={data.id} src={data.imageUrl} alt="Image" />;
-      })}
     </Box>
   );
 };
