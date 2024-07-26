@@ -16,13 +16,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home />} />
-
         <Route exact path="/sign-up" element={<SignUp />} />
         <Route exact path="/login" element={<SignIn />} />
         <Route exact path="/forgot-password" element={<ForgotPassword />} />
         <Route element={<RequireAuth />}>
           <Route exact path="/phonics" element={<Phonics />} />
+          <Route exact path="/" element={<Home />} />
         </Route>
       </Routes>
     </Router>
