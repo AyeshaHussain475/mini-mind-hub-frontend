@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import axios from "../axios";
+import axios from "../../axios";
 import { toast } from "react-toastify";
-import { useApiData } from "../Hooks/useApiData";
+import { useApiData } from "../../Hooks/useApiData";
+import Phonic from "./Phonic";
 
 const Phonics = () => {
   const animalQuery = useApiData("/animal/media", "Failed to fetch animals");
@@ -107,15 +108,10 @@ const Phonics = () => {
       <Stack direction="row" spacing={2}>
         {animalQuery.isLoading && "loading data..."}
         {animalQuery.data?.map((animal) => {
-          const url = `http://localhost:7000/mini/media/${animal.imageUrl}`;
+          const imageUrl = `http://localhost:7000/mini/media/${animal.imageUrl}`;
+          const audioUrl = `http://localhost:7000/mini/media/${animal.soundUrl}`;
           return (
-            <img
-              key={animal._id}
-              src={url}
-              style={{ height: 260 }}
-              data-aos="zoom-in"
-              alt="Image"
-            />
+            <Phonic title={animal.name} imageUrl={imageUrl} audioUrl={audioUrl} />
           );
         })}
       </Stack>
@@ -124,3 +120,4 @@ const Phonics = () => {
 };
 
 export default Phonics;
+

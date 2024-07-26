@@ -6,7 +6,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Phonics from "./containers/Phonics";
+import Phonics from "./containers/Phonics/Phonics";
 import SignUp from "./containers/Auth/Signup";
 import SignIn from "./containers/Auth/Signin";
 import ForgotPassword from "./containers/Auth/ForgotPassword";
