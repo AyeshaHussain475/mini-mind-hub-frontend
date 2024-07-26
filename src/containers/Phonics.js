@@ -107,7 +107,7 @@ const Phonics = () => {
       <Stack direction="row" spacing={2}>
         {animalQuery.isLoading && "loading data..."}
         {animalQuery.data?.map((animal) => {
-          const url = `http://localhost:7000/mini/images/${animal.imageUrl}`;
+          const url = `http://localhost:7000/mini/media/${animal.imageUrl}`;
           return (
             <img
               key={animal._id}
