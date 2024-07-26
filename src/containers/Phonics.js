@@ -2,11 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import cheetah from "../assets/Cheetah.webp";
-import tiger from "../assets/Tiger.jpg";
-import goat from "../assets/Goat.webp";
-import leopard from "../assets/Leopard.webp";
-import cat from "../assets/cat.jpg";
 import axios from "../axios";
 import { toast } from "react-toastify";
 import { useApiData } from "../Hooks/useApiData";
@@ -48,6 +43,11 @@ const Phonics = () => {
 
   const toggleForm = () => {
     setDisable(!disable);
+  };
+
+  const onAudioChange = (e) => {
+    console.log(e.target.files[0]);
+    setSoundUrl(e.target.files[0]);
   };
 
   return (
@@ -92,9 +92,10 @@ const Phonics = () => {
 
                 <label>Sound</label>
                 <input
-                  type="text"
+                  type="file"
                   id="soundUrl"
-                  onChange={(e) => setSoundUrl(e.target.value)}
+                  accept="audio/*"
+                  onChange={onAudioChange}
                 />
 
                 <Button onClick={postMedia}>Upload</Button>
