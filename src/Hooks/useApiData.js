@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "../axios";
 import { toast } from "react-toastify";
 
-export const useApiData = (url, errorMessage = "Failed to fetch data") => {
+export const useApiData = (
+  url,
+  page,
+  limit,
+  errorMessage = "Failed to fetch data"
+) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -11,6 +16,8 @@ export const useApiData = (url, errorMessage = "Failed to fetch data") => {
   const getData = async () => {
     try {
       const result = await axios.get(url);
+      console.log("limit:", limit);
+      console.log("pages", page);
 
       if (result.statusText === "OK") {
         setData(result.data);
@@ -27,7 +34,7 @@ export const useApiData = (url, errorMessage = "Failed to fetch data") => {
 
   useEffect(() => {
     getData();
-  }, [url, refetch]);
+  }, [url, refetch, page, limit]);
 
   return {
     data,

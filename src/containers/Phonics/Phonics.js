@@ -1,14 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import axios from "../../axios";
 import { toast } from "react-toastify";
 import { useApiData } from "../../Hooks/useApiData";
 import Phonic from "./Phonic";
+import Pagination from "@mui/material/Pagination";
+import { defaultLimit, itemsPerPage } from "../../utils/constants";
 
 const Phonics = () => {
-  const animalQuery = useApiData("/animal/media", "Failed to fetch animals");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(defaultLimit);
+
+  const handleLimitChange = (e) => {
+    setLimit(e.target.value);
+    setPage(1);
+  };
+  const animalQuery = useApiData(
+    `/animal/media?_page=${page}&_limit=${limit}`,
+    page,
+    limit,
+    "Failed to fetch animals"
+  );
 
   const [disable, setDisable] = useState(false);
   const [name, setName] = useState("");
@@ -111,13 +136,32 @@ const Phonics = () => {
           const imageUrl = `http://localhost:7000/mini/media/${animal.imageUrl}`;
           const audioUrl = `http://localhost:7000/mini/media/${animal.soundUrl}`;
           return (
-            <Phonic title={animal.name} imageUrl={imageUrl} audioUrl={audioUrl} />
+            <Phonic
+              title={animal.name}
+              imageUrl={imageUrl}
+              audioUrl={audioUrl}
+            />
           );
         })}
+        <Pagination count={10} page={page} onChange={(e, p) => setPage(p)} />
       </Stack>
+      <FormControl style={{ width: "100px", marginTop: "10px" }}>
+        <InputLabel>Items per page</InputLabel>
+        <Select
+          value={limit}
+          label="No of Users"
+          onChange={handleLimitChange}
+          style={{ height: "30px" }}
+        >
+          {itemsPerPage.map((item) => (
+            <MenuItem key={item} value={item}>
+              {item}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </Box>
   );
 };
 
 export default Phonics;
-
