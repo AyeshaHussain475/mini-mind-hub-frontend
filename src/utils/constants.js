@@ -1,2 +1,2 @@
-export const itemsPerPage = [3, 5, 6];
+export const itemsPerPage = [5, 10, 15];
 export const defaultLimit = itemsPerPage[0];

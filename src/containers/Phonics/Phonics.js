@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,80 +7,49 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import axios from "../../axios";
-import { toast } from "react-toastify";
-import { useApiData } from "../../Hooks/useApiData";
 import Phonic from "./Phonic";
 import Pagination from "@mui/material/Pagination";
-import { defaultLimit, itemsPerPage } from "../../utils/constants";
+import { itemsPerPage } from "../../utils/constants";
+import useFormState from "./useFormState";
 
 const Phonics = () => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(defaultLimit);
-
-  const handleLimitChange = (e) => {
-    setLimit(e.target.value);
-    setPage(1);
-  };
-  const animalQuery = useApiData(
-    `/animal/media?_page=${page}&_limit=${limit}`,
+  const {
     page,
     limit,
-    "Failed to fetch animals"
-  );
+    animalQuery,
+    postMedia,
+    disable,
+    toggleForm,
+    onAudioChange,
+    handleLimitChange,
+    setName,
+    setImageUrl,
+    setPage,
+    setSearchByName,
+    searchByName,
+  } = useFormState();
 
-  const [disable, setDisable] = useState(false);
-  const [name, setName] = useState("");
-  const [imageUrl, setImageUrl] = useState(null);
-  const [soundUrl, setSoundUrl] = useState("");
-
-  const postMedia = async () => {
-    const formData = new FormData();
-
-    formData.append("imageUrl", imageUrl);
-    formData.append("name", name);
-    formData.append("soundUrl", soundUrl);
-
-    try {
-      const result = await axios.post("/animal/media", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      if (result.status === 201) {
-        toast.success("Media is uploaded successfully");
-        animalQuery.refetch();
-      } else {
-        toast.error("Failed to upload media. Try again!");
-      }
-    } catch (error) {
-      toast.error("Media is failed to upload");
-      console.log(error);
-    }
+  const handleSearch = (e) => {
+    setSearchByName(e.target.value);
+    setPage(1);
   };
 
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const toggleForm = () => {
-    setDisable(!disable);
-  };
-
-  const onAudioChange = (e) => {
-    console.log(e.target.files[0]);
-    setSoundUrl(e.target.files[0]);
-  };
-
   return (
     <Box>
       <Typography style={{ color: "purple", fontSize: "25px" }}>
         Animal Phonics
       </Typography>
+
+      <input onChange={handleSearch} value={searchByName} />
       <Box
         sx={{
           display: "flex",
@@ -130,26 +99,32 @@ const Phonics = () => {
           </Grid>
         </Box>
       </Box>
-      <Stack direction="row" spacing={2}>
+      <Grid container spacing={2}>
         {animalQuery.isLoading && "loading data..."}
-        {animalQuery.data?.map((animal) => {
+        {animalQuery.data?.animals.map((animal) => {
           const imageUrl = `http://localhost:7000/mini/media/${animal.imageUrl}`;
           const audioUrl = `http://localhost:7000/mini/media/${animal.soundUrl}`;
           return (
-            <Phonic
-              title={animal.name}
-              imageUrl={imageUrl}
-              audioUrl={audioUrl}
-            />
+            <Grid item xs={4}>
+              <Phonic
+                title={animal.name}
+                imageUrl={imageUrl}
+                audioUrl={audioUrl}
+              />
+            </Grid>
           );
         })}
-        <Pagination count={10} page={page} onChange={(e, p) => setPage(p)} />
-      </Stack>
-      <FormControl style={{ width: "100px", marginTop: "10px" }}>
+      </Grid>
+      <Pagination
+        page={page}
+        count={animalQuery.data?.totalPages}
+        onChange={(e, p) => setPage(p)}
+      />
+      <FormControl style={{ width: 100, marginTop: 20 }}>
         <InputLabel>Items per page</InputLabel>
         <Select
           value={limit}
-          label="No of Users"
+          label="Total Animals"
           onChange={handleLimitChange}
           style={{ height: "30px" }}
         >
