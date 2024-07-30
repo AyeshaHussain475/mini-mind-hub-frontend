@@ -15,6 +15,7 @@ import Phonic from "./Phonic";
 import Pagination from "@mui/material/Pagination";
 import { itemsPerPage } from "../../utils/constants";
 import useFormState from "./useFormState";
+import { useNavigate } from "react-router-dom";
 
 const Phonics = () => {
   const {
@@ -32,6 +33,8 @@ const Phonics = () => {
     searchByName,
     setImages,
   } = useFormState();
+
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     setSearchByName(e.target.value);
@@ -64,9 +67,9 @@ const Phonics = () => {
                 "&:hover": { backgroundColor: "darkviolet" },
               }}
               variant="contained"
-              onClick={toggleForm}
+              onClick={() => navigate("/add-phonic")}
             >
-              {disable ? "Closed" : "Upload Media"}
+              Add Animal
             </Button>
             {disable && (
               <Grid>
@@ -100,8 +103,8 @@ const Phonics = () => {
       <Grid container spacing={2}>
         {animalQuery.isLoading && "loading data..."}
         {animalQuery.data?.animals.map((animal) => {
-          const imageUrl = `http://localhost:7000/mini/media/${animal.imageUrl}`;
-          const audioUrl = `http://localhost:7000/mini/media/${animal.soundUrl}`;
+          const imageUrl = `http://localhost:7000/mini/media/${animal.images[0].name}`;
+          const audioUrl = `http://localhost:7000/mini/media/${animal.sound}`;
           return (
             <Grid item xs={4}>
               <Phonic

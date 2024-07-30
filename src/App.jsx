@@ -5,6 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Phonics from "./containers/Phonics/Phonics";
+import AddPhonic from "./containers/Phonics/AddPhonic";
 import SignUp from "./containers/Auth/Signup";
 import SignIn from "./containers/Auth/Signin";
 import ForgotPassword from "./containers/Auth/ForgotPassword";
@@ -23,6 +24,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to="/phonics" replace />} />
             <Route exact path="/phonics" element={<Phonics />} />
+            <Route exact path="/add-phonic" element={<AddPhonic />} />
           </Route>
         </Route>
       </Routes>
