@@ -6,33 +6,26 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { ThemeProvider } from "@emotion/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { createTheme } from "@mui/material";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-
-const pages = ["Quran", <Link to="/phonics">Phonics</Link>, "StoryImages"];
+const pages = [
+  { label: "Quran", link: "" },
+  { label: "Phonics", link: "/phonics" },
+  { label: "StoryImages", link: "" },
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "rgba(102, 51, 153, 1)", // Change primary color
-    },
-    // You can customize other colors here as well
-  },
-});
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const navigate = useNavigate();
+
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -75,7 +68,6 @@ const Home = () => {
           >
             MiniMind Hub
           </Typography>
-
           <Box
             sx={{
               flexGrow: 1,
@@ -111,13 +103,16 @@ const Home = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem
+                  key={page}
+                  // onClick={handleCloseNavMenu}
+                  onClick={() => navigate(page.link)}
+                >
+                  <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-
           <Typography
             variant="h5"
             noWrap
@@ -140,14 +135,14 @@ const Home = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                // onClick={handleCloseNavMenu}
+                onClick={() => navigate(page.link)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.label}
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
