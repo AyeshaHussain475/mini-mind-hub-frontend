@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -7,7 +7,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
   Typography,
 } from "@mui/material";
 import AOS from "aos";
@@ -28,10 +27,10 @@ const Phonics = () => {
     onAudioChange,
     handleLimitChange,
     setName,
-    setImageUrl,
     setPage,
     setSearchByName,
     searchByName,
+    setImages,
   } = useFormState();
 
   const handleSearch = (e) => {
@@ -82,9 +81,9 @@ const Phonics = () => {
                   id="imageUrl"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setImageUrl(e.target.files[0])}
+                  multiple
+                  onChange={(e) => setImages(Array.from(e.target.files))}
                 />
-
                 <label>Sound</label>
                 <input
                   type="file"
@@ -92,7 +91,6 @@ const Phonics = () => {
                   accept="audio/*"
                   onChange={onAudioChange}
                 />
-
                 <Button onClick={postMedia}>Upload</Button>
               </Grid>
             )}

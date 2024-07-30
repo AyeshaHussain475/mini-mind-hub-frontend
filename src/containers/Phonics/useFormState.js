@@ -11,8 +11,8 @@ export default function useFormState() {
   const [searchByName, setSearchByName] = useState("");
   const [disable, setDisable] = useState(false);
   const [name, setName] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [soundUrl, setSoundUrl] = useState("");
+  const [images, setImages] = useState([]);
+  const [sound, setSound] = useState();
 
   const debounceValue = useDebounce(searchByName);
 
@@ -24,9 +24,13 @@ export default function useFormState() {
   const postMedia = async () => {
     const formData = new FormData();
 
-    formData.append("imageUrl", imageUrl);
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
     formData.append("name", name);
-    formData.append("soundUrl", soundUrl);
+    formData.append("sound", sound);
+    formData.append("description", "is hard coded");
+    formData.append("type", "mammals");
 
     try {
       const result = await axios.post("/animal/media", formData, {
@@ -49,7 +53,7 @@ export default function useFormState() {
   };
 
   const onAudioChange = (e) => {
-    setSoundUrl(e.target.files[0]);
+    setSound(e.target.files[0]);
   };
 
   const handleLimitChange = (e) => {
@@ -64,13 +68,13 @@ export default function useFormState() {
     postMedia,
     disable,
     name,
-    imageUrl,
-    soundUrl,
+    images,
+    sound,
     toggleForm,
     onAudioChange,
     handleLimitChange,
     setName,
-    setImageUrl,
+    setImages,
     setPage,
     searchByName,
     setSearchByName,
