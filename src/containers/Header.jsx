@@ -19,13 +19,15 @@ const pages = [
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const Home = () => {
+const Header = () => {
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) return null;
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -188,4 +190,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Header;
