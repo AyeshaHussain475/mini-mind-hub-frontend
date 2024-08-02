@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   Button,
   FormControl,
   Grid,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
+  Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import AOS from "aos";
@@ -16,8 +19,11 @@ import Pagination from "@mui/material/Pagination";
 import { itemsPerPage } from "../../utils/constants";
 import useFormState from "./useFormState";
 import { useNavigate } from "react-router-dom";
+import { Search as SeacrhIcon, Search } from "@mui/icons-material";
+import img from "../../assets/img.avif";
 
 const Phonics = () => {
+  const textFieldRef = useRef(null);
   const {
     page,
     limit,
@@ -41,69 +47,60 @@ const Phonics = () => {
     setPage(1);
   };
 
+  const handleIconClick = () => {
+    if (textFieldRef.current) {
+      textFieldRef.current.focus();
+    }
+  };
+
   useEffect(() => {
     AOS.init();
   }, []);
 
   return (
     <Box>
-      <Typography style={{ color: "purple", fontSize: "25px" }}>
-        Animal Phonics
-      </Typography>
-
-      <input onChange={handleSearch} value={searchByName} />
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: "20px",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1,
         }}
       >
-        <Box component="form">
-          <Grid container spacing={2}>
-            <Button
-              sx={{
-                backgroundColor: "purple",
-                "&:hover": { backgroundColor: "darkviolet" },
-              }}
-              variant="contained"
-              onClick={() => navigate("/add-phonic")}
-            >
-              Add Animal
-            </Button>
-            {disable && (
-              <Grid>
-                <label>Specie Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <label>Image</label>
-                <input
-                  id="imageUrl"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) => setImages(Array.from(e.target.files))}
-                />
-                <label>Sound</label>
-                <input
-                  type="file"
-                  id="soundUrl"
-                  accept="audio/*"
-                  onChange={onAudioChange}
-                />
-                <Button onClick={postMedia}>Upload</Button>
-              </Grid>
-            )}
-          </Grid>
-        </Box>
+        <Typography
+          style={{ color: "purple", fontSize: "25px" }}
+          align="center"
+        >
+          Animal Phonics
+        </Typography>
+        <img src={img} style={{ width: "60px", height: "60px" }} />
       </Box>
+      <Stack direction="row" spacing={127} style={{ marginBottom: "15px" }}>
+        <TextField
+          label="Search by name"
+          value={searchByName}
+          onChange={handleSearch}
+          inputRef={textFieldRef}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Search
+                  style={{ color: "purple", cursor: "pointer" }}
+                  onClick={handleIconClick}
+                />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Button variant="contained" onClick={() => navigate("/add-phonic")}>
+          Add Animal
+        </Button>
+      </Stack>
       <Grid container spacing={2}>
         {animalQuery.isLoading && "loading data..."}
         {animalQuery.data?.animals.map((animal) => {
-          const imageUrl = `http://localhost:7000/mini/media/${animal.images[0].name}`;
+          const primaryImage = animal.images.find((image) => image.isPrimary);
+          const imageUrl = `http://localhost:7000/mini/media/${primaryImage?.name}`;
           const audioUrl = `http://localhost:7000/mini/media/${animal.sound}`;
           return (
             <Grid item xs={4}>
@@ -111,6 +108,7 @@ const Phonics = () => {
                 title={animal.name}
                 imageUrl={imageUrl}
                 audioUrl={audioUrl}
+                description={animal.description}
               />
             </Grid>
           );
