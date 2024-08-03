@@ -109,6 +109,7 @@ const Phonics = () => {
                 imageUrl={imageUrl}
                 audioUrl={audioUrl}
                 description={animal.description}
+                id={animal._id}
               />
             </Grid>
           );
