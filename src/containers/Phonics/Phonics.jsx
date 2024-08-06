@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   Grid,
   InputAdornment,
   InputLabel,
@@ -38,6 +39,8 @@ const Phonics = () => {
     setSearchByName,
     searchByName,
     setImages,
+    type,
+    setType,
   } = useFormState();
 
   const navigate = useNavigate();
@@ -51,6 +54,34 @@ const Phonics = () => {
     if (textFieldRef.current) {
       textFieldRef.current.focus();
     }
+  };
+
+  const animalTypes = [
+    {
+      label: "All",
+      value: " ",
+    },
+    {
+      label: "Mammals",
+      value: "mammals",
+    },
+    {
+      label: "Reptiles",
+      value: "reptiles",
+    },
+    {
+      label: "Birds",
+      value: "birds",
+    },
+    {
+      label: "Fish",
+      value: "fish",
+    },
+  ];
+
+  const handleType = (event) => {
+    setType(event.target.value);
+    setPage(1);
   };
 
   useEffect(() => {
@@ -75,7 +106,7 @@ const Phonics = () => {
         </Typography>
         <img src={img} style={{ width: "60px", height: "60px" }} />
       </Box>
-      <Stack direction="row" spacing={127} style={{ marginBottom: "15px" }}>
+      <Stack direction="row" style={{ marginBottom: "15px" }}>
         <TextField
           label="Search by name"
           value={searchByName}
@@ -92,7 +123,29 @@ const Phonics = () => {
             ),
           }}
         />
-        <Button variant="contained" onClick={() => navigate("/add-phonic")}>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-helper-label">Type</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={type}
+            label="type"
+            onChange={handleType}
+          >
+            {animalTypes.map((type) => (
+              <MenuItem key={type.value} value={type.value}>
+                {" "}
+                {type.label}{" "}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <div style={{ flexGrow: 1 }} />
+        <Button
+          // size="small"
+          variant="contained"
+          onClick={() => navigate("/add-phonic")}
+        >
           Add Animal
         </Button>
       </Stack>
@@ -110,6 +163,7 @@ const Phonics = () => {
                 audioUrl={audioUrl}
                 description={animal.description}
                 id={animal._id}
+                refetch={animalQuery.refetch}
               />
             </Grid>
           );

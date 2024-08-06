@@ -13,11 +13,12 @@ export default function useFormState() {
   const [name, setName] = useState("");
   const [images, setImages] = useState([]);
   const [sound, setSound] = useState();
+  const [type, setType] = useState("");
 
   const debounceValue = useDebounce(searchByName);
 
   const animalQuery = useApiData(
-    `/animal/media?page=${page}&limit=${limit}&search=${debounceValue}`,
+    `/animal/media?page=${page}&limit=${limit}&search=${debounceValue}&type=${type}`,
     "Failed to fetch animals"
   );
 
@@ -78,5 +79,7 @@ export default function useFormState() {
     setPage,
     searchByName,
     setSearchByName,
+    type,
+    setType,
   };
 }
