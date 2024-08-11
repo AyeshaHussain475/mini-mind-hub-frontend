@@ -12,6 +12,7 @@ import {
 import { useParams } from "react-router-dom";
 import axios from "../../axios";
 import { EmojiEvents } from "@mui/icons-material";
+//import Jungle from "../../assets/jungle.jpg";
 
 const QuizDetail = () => {
   const { quizId } = useParams();
@@ -65,6 +66,7 @@ const QuizDetail = () => {
         padding: 3,
         backgroundColor: "#e3f2fd",
         minHeight: "100vh",
+        // backgroundImage: `url(${Jungle})`,
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between" }}>
