@@ -12,6 +12,8 @@ import ForgotPassword from "./containers/Auth/ForgotPassword";
 import Layout from "./components/layout/Layout";
 import { RequireAuth } from "./utils/RequireAuth";
 import "./App.css";
+import QuizListPage from "./containers/Quizzes/QuizListPage";
+import QuizDetail from "./containers/Quizzes/QuizDetail";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
             <Route path="/" element={<Navigate to="/phonics" replace />} />
             <Route exact path="/phonics" element={<Phonics />} />
             <Route exact path="/add-phonic" element={<AddPhonic />} />
+            <Route exact path="/quiz-list" element={<QuizListPage />} />
+            <Route exact path="/quiz/:quizId" element={<QuizDetail />} />
           </Route>
         </Route>
       </Routes>
