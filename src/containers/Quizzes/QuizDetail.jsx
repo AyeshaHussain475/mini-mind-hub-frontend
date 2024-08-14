@@ -8,6 +8,7 @@ import {
   FormControl,
   RadioGroup,
   IconButton,
+  Button,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import axios from "../../axios";
@@ -17,15 +18,12 @@ import { EmojiEvents } from "@mui/icons-material";
 const QuizDetail = () => {
   const { quizId } = useParams();
   const [quiz, setQuiz] = useState(null);
-  const [quizName, setQuizName] = useState("");
   const [timeLeft, setTimeLeft] = useState(0);
   const [timeUp, setTimeUp] = useState(false);
-  const [option, setOption] = useState([]);
 
   const getQuizDetails = async (quizId) => {
     const result = await axios.get(`/quiz/${quizId}`);
     setQuiz(result.data.quiz);
-    setQuizName(result.data.quiz.title);
     const durationStr = quiz.duration;
     const durationMinutes = parseInt(durationStr, 10);
     setTimeLeft(durationMinutes * 60);
@@ -36,28 +34,54 @@ const QuizDetail = () => {
     getQuizDetails(quizId);
   }, [quizId]);
 
-  useEffect(() => {
-    let timer;
-    if (timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    } else {
-      setTimeUp(true);
-    }
-    return () => clearInterval(timer);
-  }, [timeLeft]);
+  // useEffect(() => {
+  //   let timer;
+  //   if (timeLeft > 0) {
+  //     timer = setInterval(() => {
+  //       setTimeLeft((prev) => prev - 1);
+  //     }, 1000);
+  //   } else {
+  //     setTimeUp(true);
+  //   }
+  //   return () => clearInterval(timer);
+  // }, [timeLeft]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
   };
+
+  console.log({ quiz });
   const handleOptionChange = (questionId, value) => {
-    setOption((prevOptions) => ({
-      ...prevOptions,
-      [questionId]: value,
+    const updatedQuestions = quiz.questions.map((q) => {
+      if (q._id === questionId) {
+        return {
+          ...q,
+          userAttempt: value,
+        };
+      }
+      return q;
+    });
+
+    setQuiz((q) => ({
+      ...q,
+      questions: updatedQuestions,
     }));
+  };
+
+  const handleSave = async () => {
+    const user = localStorage.getItem("user");
+    const answers = quiz.questions.map((q) => ({
+      questionId: q._id,
+      answer: q.userAttempt,
+    }));
+
+    const result = await axios.post(`/quiz/${quizId}/attempt`, {
+      user,
+      answers,
+    });
+    console.log(result);
   };
 
   return (
@@ -112,7 +136,7 @@ const QuizDetail = () => {
         }}
       >
         <EmojiEvents style={{ fontSize: "3rem", marginRight: "10px" }} />
-        {quizName}
+        {quiz?.title}
       </div>
       {quiz?.questions.map((question, i) => (
         <Paper
@@ -133,7 +157,7 @@ const QuizDetail = () => {
             variant="h5"
             style={{ marginBottom: "10px", color: "#156499" }}
           >
-            Q # {i + 1}. {question.questionText}
+            Q#{i + 1}. {question.questionText}
           </Typography>
           <FormControl component="fieldset">
             <RadioGroup
@@ -150,6 +174,7 @@ const QuizDetail = () => {
                   key={j}
                   value={option}
                   control={<Radio color="primary" />}
+                  onClick={() => handleOptionChange(question._id, option)}
                   label={<Typography variant="body1">{option}</Typography>}
                   style={{ marginRight: "20px" }}
                 />
@@ -158,6 +183,7 @@ const QuizDetail = () => {
           </FormControl>
         </Paper>
       ))}
+      <Button onClick={handleSave}>Submit</Button>
     </Box>
   );
 };
