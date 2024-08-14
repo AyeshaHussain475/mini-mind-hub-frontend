@@ -51,10 +51,11 @@ export default function SignIn() {
         password,
       });
 
-      const user = localStorage.setItem(
-        "user",
-        JSON.stringify(result.data.user)
-      );
+      localStorage.setItem("token", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data.user));
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + result.data.token;
+
       if (result.status === 200) {
         toast.success("Login successfully");
         naviagte("/");
@@ -62,6 +63,7 @@ export default function SignIn() {
         toast.error("Something went wrong");
       }
     } catch (error) {
+      console.log(error);
       toast.error("Something went wrong");
     }
   };
