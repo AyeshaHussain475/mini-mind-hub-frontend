@@ -12,7 +12,6 @@ const QuizListPage = () => {
 
   const getQuizzes = async () => {
     const result = await axios.get("/quiz");
-    console.log(result.data.quizzes, "Quizzes");
     setQuizzes(result.data.quizzes);
   };
 
@@ -20,8 +19,26 @@ const QuizListPage = () => {
     getQuizzes();
   }, []);
 
-  const handleClick = (id) => {
-    console.log(id, "iddd");
+  const handleClick = async (id) => {
+    const quiz = quizzes.find((q) => q._id === id);
+
+    if (quiz) {
+      const updatedAttempts = quiz.attempts - 1;
+
+      const updatedQuiz = { ...quiz, attempts: updatedAttempts };
+
+      try {
+        const res = await axios.put(`quiz/${id}`, updatedQuiz);
+
+        console.log("Quiz updated successfully:", res.data);
+      } catch (error) {
+        console.error("Error updating quiz:", error);
+      }
+    } else {
+      console.error("Quiz not found for ID:", id);
+    }
+
+    console.log("Found quiz:", quiz);
     navigate(`/quiz/${id}`);
   };
 
@@ -81,10 +98,25 @@ const QuizListPage = () => {
                 >
                   {quiz.description}
                 </Typography>
+                <Typography
+                  variant="body1"
+                  color="primary"
+                  sx={{
+                    fontWeight: "bold",
+                    backgroundColor: "#e0f7fa",
+                    borderRadius: "5px",
+                    padding: "5px 10px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  Attempts Left:{quiz.attempts}
+                </Typography>
+
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={() => handleClick(quiz._id)}
+                  disabled={quiz.attempts <= 0}
                 >
                   Start Quiz
                 </Button>
