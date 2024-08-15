@@ -5,6 +5,7 @@ import "./styles.css";
 import QuizPic from "../../assets/takequiz.jpg";
 import quizTime from "../../assets/partypopper.jpg";
 import { useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
 
 const QuizListPage = () => {
   const navigate = useNavigate();
@@ -19,27 +20,10 @@ const QuizListPage = () => {
     getQuizzes();
   }, []);
 
-  const handleClick = async (id) => {
-    const quiz = quizzes.find((q) => q._id === id);
+  const handleQuiz = (quiz) => {
+    if (quiz.attemptsRemaining === 0) return;
 
-    if (quiz) {
-      const updatedAttempts = quiz.attempts - 1;
-
-      const updatedQuiz = { ...quiz, attempts: updatedAttempts };
-
-      try {
-        const res = await axios.put(`quiz/${id}`, updatedQuiz);
-
-        console.log("Quiz updated successfully:", res.data);
-      } catch (error) {
-        console.error("Error updating quiz:", error);
-      }
-    } else {
-      console.error("Quiz not found for ID:", id);
-    }
-
-    console.log("Found quiz:", quiz);
-    navigate(`/quiz/${id}`);
+    navigate(`/quiz/${quiz._id}`);
   };
 
   return (
@@ -90,6 +74,10 @@ const QuizListPage = () => {
                   sx={{ fontWeight: "bold", color: "#ff4081", paddingTop: 2 }}
                 >
                   {quiz.title}
+                  <EditIcon
+                    sx={{ cursor: "pointer", color: "#ff4081", marginLeft: 1 }}
+                    onClick={() => navigate(`/edit-quiz/${quiz._id}`)}
+                  />
                 </Typography>
                 <Typography
                   variant="body2"
@@ -109,14 +97,13 @@ const QuizListPage = () => {
                     marginBottom: "10px",
                   }}
                 >
-                  Attempts Left:{quiz.attempts}
+                  Attempts Left: {quiz.attemptsRemaining}
                 </Typography>
-
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => handleClick(quiz._id)}
-                  disabled={quiz.attempts <= 0}
+                  onClick={() => handleQuiz(quiz)}
+                  disabled={quiz.attemptsRemaining === 0}
                 >
                   Start Quiz
                 </Button>

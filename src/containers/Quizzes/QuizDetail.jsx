@@ -71,14 +71,14 @@ const QuizDetail = () => {
   };
 
   const handleSave = async () => {
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
     const answers = quiz.questions.map((q) => ({
       questionId: q._id,
       answer: q.userAttempt,
     }));
 
     const result = await axios.post(`/quiz/${quizId}/attempt`, {
-      user,
+      userId: user._id,
       answers,
     });
     console.log(result);
