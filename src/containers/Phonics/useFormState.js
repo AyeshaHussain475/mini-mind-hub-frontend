@@ -22,8 +22,6 @@ export default function useFormState() {
     "Failed to fetch animals"
   );
 
-  console.log({ type });
-
   const postMedia = async () => {
     const formData = new FormData();
 

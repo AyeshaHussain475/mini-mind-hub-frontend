@@ -14,6 +14,8 @@ import { RequireAuth } from "./utils/RequireAuth";
 import "./App.css";
 import QuizListPage from "./containers/Quizzes/QuizListPage";
 import QuizDetail from "./containers/Quizzes/QuizDetail";
+import EditQuiz from "./containers/Quizzes/EditQuiz";
+import DummyQuiz from "./containers/Quizzes/DummyQuiz";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
             <Route exact path="/add-phonic" element={<AddPhonic />} />
             <Route exact path="/quiz-list" element={<QuizListPage />} />
             <Route exact path="/quiz/:quizId" element={<QuizDetail />} />
+            <Route exact path="/edit-quiz/:quizId" element={<EditQuiz />} />
+            <Route exact path="/quizz" element={<DummyQuiz />} />
           </Route>
         </Route>
       </Routes>

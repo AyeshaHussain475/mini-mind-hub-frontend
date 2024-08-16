@@ -184,6 +184,7 @@ const Phonics = () => {
         {animalQuery.data?.animals.map((animal) => {
           const primaryImage = animal.images.find((image) => image.isPrimary);
           const imageUrl = `http://localhost:7000/mini/media/${primaryImage?.name}`;
+          console.log(imageUrl);
           const audioUrl = `http://localhost:7000/mini/media/${animal.sound}`;
           return (
             <Grid item xs={4}>

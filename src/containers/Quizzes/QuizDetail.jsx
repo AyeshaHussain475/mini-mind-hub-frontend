@@ -13,7 +13,6 @@ import {
 import { useParams } from "react-router-dom";
 import axios from "../../axios";
 import { EmojiEvents } from "@mui/icons-material";
-//import Jungle from "../../assets/jungle.jpg";
 
 const QuizDetail = () => {
   const { quizId } = useParams();

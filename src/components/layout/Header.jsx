@@ -16,6 +16,7 @@ const pages = [
   { label: "Quran", link: "" },
   { label: "Phonics", link: "/phonics" },
   { label: "StoryImages", link: "" },
+  { label: "Quiz", link: "/quiz-list" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -50,7 +51,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

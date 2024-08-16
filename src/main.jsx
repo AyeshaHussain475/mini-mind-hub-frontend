@@ -2,10 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 const theme = createTheme({
   palette: {

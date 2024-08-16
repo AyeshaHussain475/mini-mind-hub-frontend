@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../axios";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import "./styles.css";
 import QuizPic from "../../assets/takequiz.jpg";
-import quizTime from "../../assets/partypopper.jpg";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -15,7 +13,7 @@ const QuizListPage = () => {
     const result = await axios.get("/quiz");
     setQuizzes(result.data.quizzes);
   };
-
+  console.log(quizzes);
   useEffect(() => {
     getQuizzes();
   }, []);
