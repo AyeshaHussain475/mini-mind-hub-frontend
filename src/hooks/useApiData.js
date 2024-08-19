@@ -4,12 +4,13 @@ import { toast } from "react-toastify";
 
 export const useApiData = (url, errorMessage = "Failed to fetch data") => {
   const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [refetch, setRefetch] = useState(0);
 
   const getData = async () => {
     try {
+      setIsLoading(true);
       const result = await axios.get(url);
 
       if (result.statusText === "OK") {
