@@ -18,18 +18,17 @@ import {
   PlayArrow as PlayArrowIcon,
   Pause as PauseIcon,
 } from "@mui/icons-material";
-import axios from "../../axios";
+import axios from "../../../axios";
 import { toast } from "react-toastify";
-import "./stylesheet/styles.css";
 
-export default function Phonic({
+export const Animal = ({
   title,
   imageUrl,
   audioUrl,
   description,
   id,
   refetch,
-}) {
+}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
@@ -145,4 +144,4 @@ export default function Phonic({
       </Dialog>
     </Card>
   );
-}
+};

@@ -4,8 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Phonics from "./containers/Phonics/Phonics";
-import AddPhonic from "./containers/Phonics/AddPhonic";
+import AddAnimalPhonic from "./containers/Phonics/Animal/AddAnimal/AddAnimal";
 import SignUp from "./containers/Auth/Signup";
 import SignIn from "./containers/Auth/Signin";
 import ForgotPassword from "./containers/Auth/ForgotPassword";
@@ -13,8 +12,9 @@ import Layout from "./components/layout/Layout";
 import { RequireAuth } from "./utils/RequireAuth";
 import QuizListPage from "./containers/Quizzes/QuizListPage";
 import EditQuiz from "./containers/Quizzes/EditQuiz/EditQuiz";
-import MainPhonicsPage from "./containers/Phonics/MainPhonicsPage";
+import PhonicsPage from "./containers/Phonics/Phonics";
 import AttemptQuiz from "./containers/Quizzes/AttemptQuiz";
+import AnimalPhonics from "./containers/Phonics/Animal/Animals";
 import "./App.css";
 
 function App() {
@@ -27,9 +27,9 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to="/phonics" replace />} />
-            <Route exact path="/phonics" element={<Phonics />} />
-            <Route exact path="/add-phonic" element={<AddPhonic />} />
-            <Route exact path="/main-phonic" element={<MainPhonicsPage />} />
+            <Route exact path="/phonics" element={<PhonicsPage />} />
+            <Route exact path="/phonics/animal" element={<AnimalPhonics />} />
+            <Route exact path="/phonics/animal/create" element={<AddAnimalPhonic />} />
             <Route exact path="/quizzes" element={<QuizListPage />} />
             <Route
               exact

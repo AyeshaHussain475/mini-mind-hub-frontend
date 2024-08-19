@@ -137,3 +137,8 @@ code {
     transform: rotate(360deg);
   }
 }
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(195, 35, 160, 0.3);
+}

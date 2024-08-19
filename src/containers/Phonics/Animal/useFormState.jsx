@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useApiData } from "../../hooks/useApiData";
-import { useDebounce } from "../../hooks/useDebounce";
-import { defaultLimit } from "../../utils/constants";
+import { useApiData } from "../../../hooks/useApiData";
+import { useDebounce } from "../../../hooks/useDebounce";
+import { defaultLimit } from "../../../utils/constants";
 import { toast } from "react-toastify";
-import axios from "../../axios";
+import axios from "../../../axios";
 
 export default function useFormState() {
   const [page, setPage] = useState(1);
