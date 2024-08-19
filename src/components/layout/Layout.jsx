@@ -5,7 +5,12 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <div className="main">
+      <div
+        className="main"
+        style={{
+          height: "calc(100vh - 69px)",
+        }}
+      >
         <Outlet />
       </div>
     </>

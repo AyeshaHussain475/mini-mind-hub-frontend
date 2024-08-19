@@ -16,7 +16,7 @@ const pages = [
   { label: "Quran", link: "" },
   { label: "Phonics", link: "/phonics" },
   { label: "StoryImages", link: "" },
-  { label: "Quiz", link: "/quiz-list" },
+  { label: "Quiz", link: "/quizzes" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
