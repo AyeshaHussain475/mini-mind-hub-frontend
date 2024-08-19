@@ -1,16 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Box,
   Button,
   FormControl,
-  FormHelperText,
-  FormLabel,
   Grid,
   InputAdornment,
   InputLabel,
   MenuItem,
   Select,
-  Stack,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
@@ -31,7 +28,7 @@ import Birds from "../../assets/birds.png";
 import Fish from "../../assets/fish.png";
 import Reptiles from "../../assets/reptiles.png";
 import All from "../../assets/all.png";
-import InfoIcon from "@mui/icons-material/Info";
+import Loader from "../../components/Loader";
 
 const Phonics = () => {
   const textFieldRef = useRef(null);
@@ -104,7 +101,7 @@ const Phonics = () => {
   }, []);
 
   return (
-    <Box>
+    <Box p={3}>
       <Box
         sx={{
           display: "flex",
@@ -179,47 +176,56 @@ const Phonics = () => {
           </Button>
         </Grid>
       </Grid>
-      <Grid container spacing={2}>
-        {animalQuery.isLoading && "loading data..."}
-        {animalQuery.data?.animals.map((animal) => {
-          const primaryImage = animal.images.find((image) => image.isPrimary);
-          const imageUrl = `http://localhost:7000/mini/media/${primaryImage?.name}`;
-          console.log(imageUrl);
-          const audioUrl = `http://localhost:7000/mini/media/${animal.sound}`;
-          return (
-            <Grid item xs={4}>
-              <Phonic
-                title={animal.name}
-                imageUrl={imageUrl}
-                audioUrl={audioUrl}
-                description={animal.description}
-                id={animal._id}
-                refetch={animalQuery.refetch}
-              />
-            </Grid>
-          );
-        })}
+      {animalQuery.isLoading && <Loader />}
+      <Grid container spacing={2} mb={2}>
+        {!animalQuery.isLoading &&
+          animalQuery.data?.animals.map((animal) => {
+            const primaryImage = animal.images.find((image) => image.isPrimary);
+            const imageUrl = `http://localhost:7000/mini/media/${primaryImage?.name}`;
+            console.log(imageUrl);
+            const audioUrl = `http://localhost:7000/mini/media/${animal.sound}`;
+            return (
+              <Grid item xs={4}>
+                <Phonic
+                  title={animal.name}
+                  imageUrl={imageUrl}
+                  audioUrl={audioUrl}
+                  description={animal.description}
+                  id={animal._id}
+                  refetch={animalQuery.refetch}
+                />
+              </Grid>
+            );
+          })}
       </Grid>
-      <Pagination
-        page={page}
-        count={animalQuery.data?.totalPages}
-        onChange={(e, p) => setPage(p)}
-      />
-      <FormControl style={{ width: 100, marginTop: 20 }}>
-        <InputLabel>Items per page</InputLabel>
-        <Select
-          value={limit}
-          label="Total Animals"
-          onChange={handleLimitChange}
-          style={{ height: "30px" }}
-        >
-          {itemsPerPage.map((item) => (
-            <MenuItem key={item} value={item}>
-              {item}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {!animalQuery.isLoading && animalQuery.data?.animals.length !== 0 && (
+        <Grid container justifyContent="flex-end">
+          <Grid item>
+            <Pagination
+              page={page}
+              count={animalQuery.data?.totalPages}
+              onChange={(e, p) => setPage(p)}
+            />
+          </Grid>
+          <Grid item>
+            <FormControl style={{ width: 100 }}>
+              <InputLabel>Items per page</InputLabel>
+              <Select
+                value={limit}
+                label="Total Animals"
+                onChange={handleLimitChange}
+                style={{ height: "30px" }}
+              >
+                {itemsPerPage.map((item) => (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      )}
     </Box>
   );
 };
