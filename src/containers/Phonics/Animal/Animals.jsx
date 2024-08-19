@@ -31,7 +31,9 @@ import All from "../../../assets/all.png";
 import Loader from "../../../components/Loader";
 
 const AnimalPhonics = () => {
+  const navigate = useNavigate();
   const textFieldRef = useRef(null);
+
   const {
     page,
     limit,
@@ -50,8 +52,6 @@ const AnimalPhonics = () => {
     setType,
   } = useFormState();
 
-  const navigate = useNavigate();
-
   const handleSearch = (e) => {
     setSearchByName(e.target.value);
     setPage(1);
@@ -62,34 +62,6 @@ const AnimalPhonics = () => {
       textFieldRef.current.focus();
     }
   };
-
-  const animalTypes = [
-    {
-      label: "All",
-      value: "",
-      img: All,
-    },
-    {
-      label: "Mammals",
-      value: "mammals",
-      img: Mammals,
-    },
-    {
-      label: "Reptiles",
-      value: "reptiles",
-      img: Reptiles,
-    },
-    {
-      label: "Birds",
-      value: "birds",
-      img: Birds,
-    },
-    {
-      label: "Fish",
-      value: "fish",
-      img: Fish,
-    },
-  ];
 
   const handleType = (event) => {
     setType(event.target.value);
@@ -185,7 +157,7 @@ const AnimalPhonics = () => {
             const imageUrl = `http://localhost:7000/mini/media/${primaryImage?.name}`;
             const audioUrl = `http://localhost:7000/mini/media/${animal.sound}`;
             return (
-              <Grid item xs={4}>
+              <Grid item xs={4} key={animal._id}>
                 <Animal
                   title={animal.name}
                   imageUrl={imageUrl}
@@ -231,3 +203,31 @@ const AnimalPhonics = () => {
 };
 
 export default AnimalPhonics;
+
+const animalTypes = [
+  {
+    label: "All",
+    value: "",
+    img: All,
+  },
+  {
+    label: "Mammals",
+    value: "mammals",
+    img: Mammals,
+  },
+  {
+    label: "Reptiles",
+    value: "reptiles",
+    img: Reptiles,
+  },
+  {
+    label: "Birds",
+    value: "birds",
+    img: Birds,
+  },
+  {
+    label: "Fish",
+    value: "fish",
+    img: Fish,
+  },
+];
