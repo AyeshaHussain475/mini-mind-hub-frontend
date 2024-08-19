@@ -5,7 +5,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
@@ -45,148 +44,144 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
+  const handleAction = (action) => {
+    if (action === 'Logout') {
+      localStorage.removeItem("user");
+      navigate("/login");
+    } else {
+      // handle cases for other items
+    }
   };
 
   return (
     <AppBar position="sticky">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+      <Toolbar>
+        <Typography
+          variant="h6"
+          noWrap
+          component="a"
+          href="#app-bar-with-responsive-menu"
+          sx={{
+            mr: 2,
+            display: { xs: "none", md: "flex" },
+            fontFamily: "monospace",
+            fontWeight: 700,
+            letterSpacing: ".3rem",
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
+          MiniMind Hub
+        </Typography>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: { xs: "flex", md: "none" },
+          }}
+        >
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleOpenNavMenu}
+            color="inherit"
+          >
+            <MenuIcon />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorElNav}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            open={Boolean(anchorElNav)}
+            onClose={handleCloseNavMenu}
             sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+              display: { xs: "block", md: "none" },
             }}
           >
-            MiniMind Hub
-          </Typography>
-          <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: "flex", md: "none" },
-            }}
-          >
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page}
-                  // onClick={handleCloseNavMenu}
-                  onClick={() => navigate(page.link)}
-                >
-                  <Typography textAlign="center">{page.label}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            MiniMind Hub
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
+              <MenuItem
                 key={page}
                 // onClick={handleCloseNavMenu}
                 onClick={() => navigate(page.link)}
-                sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page.label}
-              </Button>
+                <Typography textAlign="center">{page.label}</Typography>
+              </MenuItem>
             ))}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Typography sx={{ color: "white" }}>
-                  {user.firstName} {user.lastName}
-                </Typography>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+          </Menu>
+        </Box>
+        <Typography
+          variant="h5"
+          noWrap
+          component="a"
+          href="#app-bar-with-responsive-menu"
+          sx={{
+            mr: 2,
+            display: { xs: "flex", md: "none" },
+            flexGrow: 1,
+            fontFamily: "monospace",
+            fontWeight: 700,
+            letterSpacing: ".3rem",
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
+          MiniMind Hub
+        </Typography>
+        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          {pages.map((page) => (
+            <Button
+              key={page}
+              // onClick={handleCloseNavMenu}
+              onClick={() => navigate(page.link)}
+              sx={{ my: 2, color: "white", display: "block" }}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    {setting === "Logout" ? (
-                      <Button onClick={handleLogout} color="inherit">
-                        {setting}
-                      </Button>
-                    ) : (
-                      setting
-                    )}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
+              {page.label}
+            </Button>
+          ))}
+        </Box>
+        <Box sx={{ flexGrow: 0 }}>
+          <Tooltip title="Open settings">
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Typography sx={{ color: "white" }}>
+                {user.firstName} {user.lastName}
+              </Typography>
+            </IconButton>
+          </Tooltip>
+          <Menu
+            sx={{ mt: "45px" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            {settings.map((setting) => (
+              <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <Typography textAlign="center" onClick={() => handleAction(setting)}>
+                    {setting}
+                </Typography>
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
+      </Toolbar>
     </AppBar>
   );
 };
