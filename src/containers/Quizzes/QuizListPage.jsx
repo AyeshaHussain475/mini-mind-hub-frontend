@@ -21,7 +21,7 @@ const QuizListPage = () => {
   const handleQuiz = (quiz) => {
     if (quiz.attemptsRemaining === 0) return;
 
-    navigate(`/quiz/${quiz._id}`);
+    navigate(`/quizzes/${quiz._id}/attempt`);
   };
 
   return (
@@ -74,7 +74,7 @@ const QuizListPage = () => {
                   {quiz.title}
                   <EditIcon
                     sx={{ cursor: "pointer", color: "#ff4081", marginLeft: 1 }}
-                    onClick={() => navigate(`/edit-quiz/${quiz._id}`)}
+                    onClick={() => navigate(`/quizzes/${quiz._id}/edit`)}
                   />
                 </Typography>
                 <Typography

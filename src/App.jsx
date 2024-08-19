@@ -13,11 +13,9 @@ import Layout from "./components/layout/Layout";
 import { RequireAuth } from "./utils/RequireAuth";
 import "./App.css";
 import QuizListPage from "./containers/Quizzes/QuizListPage";
-import QuizDetail from "./containers/Quizzes/QuizDetail";
-import EditQuiz from "./containers/Quizzes/DummyQuiz";
-import DummyQuiz from "./containers/Quizzes/DummyQuiz";
-import DummyQuiz2 from "./containers/Quizzes/EditQuiz/EditQuiz";
+import EditQuiz from "./containers/Quizzes/EditQuiz/EditQuiz";
 import MainPhonicsPage from "./containers/Phonics/MainPhonicsPage";
+import AttemptQuiz from "./containers/Quizzes/AttemptQuiz";
 
 function App() {
   return (
@@ -31,11 +29,13 @@ function App() {
             <Route path="/" element={<Navigate to="/phonics" replace />} />
             <Route exact path="/phonics" element={<Phonics />} />
             <Route exact path="/add-phonic" element={<AddPhonic />} />
-            <Route exact path="/quiz-list" element={<QuizListPage />} />
-            <Route exact path="/quiz/:quizId" element={<QuizDetail />} />
-            <Route exact path="/edit-quiz/:quizId" element={<EditQuiz />} />
-            <Route exact path="/quizz/:quizId" element={<DummyQuiz />} />
-            <Route exact path="/edit-quiz1/:quizId" element={<DummyQuiz2 />} />
+            <Route exact path="/quizzes" element={<QuizListPage />} />
+            <Route
+              exact
+              path="/quizzes/:quizId/attempt"
+              element={<AttemptQuiz />}
+            />
+            <Route exact path="/quizzes/:quizId/edit" element={<EditQuiz />} />
             <Route exact path="/main-phonic" element={<MainPhonicsPage />} />
           </Route>
         </Route>

@@ -1,20 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { Box, Divider, Stack, TextField, Typography } from "@mui/material";
+import React from "react";
+import {
+  IconButton,
+  Skeleton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { KeyboardBackspace as NavigateBackIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
-export const QuizDetails = ({ quiz, isLoading }) => {
-  const [title, setTitle] = useState("");
-  const [duration, setDuration] = useState("");
-  const [attempts, setAttempts] = useState("");
-  const [description, setDescription] = useState("");
+export const QuizDetails = ({
+  quiz,
+  isLoading,
+  title,
+  description,
+  attempts,
+  duration,
+  setTitle,
+  setAttempts,
+  setDescription,
+  setDuration,
+}) => {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (quiz) {
-      setTitle(quiz.title);
-      setDuration(quiz.duration);
-      setAttempts(quiz.attempts);
-      setDescription(quiz.description);
-    }
-  }, [quiz]);
+  if (isLoading) {
+    return (
+      <Stack spacing={1} mt={6} p={2} gap={2}>
+        <Skeleton variant="text" sx={{ fontSize: "2rem" }} />
+        <Skeleton variant="rounded" width={"100%"} height={40} />
+        <Skeleton variant="rounded" width={"100%"} height={80} />
+        <Skeleton variant="rounded" width={"100%"} height={40} />
+        <Skeleton variant="rounded" width={"100%"} height={40} />
+      </Stack>
+    );
+  }
 
   return (
     <Stack
@@ -27,6 +46,11 @@ export const QuizDetails = ({ quiz, isLoading }) => {
         boxShadow: "2px 0 10px rgba(0,0,0,0.1)",
       }}
     >
+      <div>
+        <IconButton title="Go Back" onClick={() => navigate("/quizzes")}>
+          <NavigateBackIcon />
+        </IconButton>
+      </div>
       <Typography variant="h6" mb={1}>
         Update Quiz Details
       </Typography>
