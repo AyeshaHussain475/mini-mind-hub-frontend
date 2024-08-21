@@ -24,7 +24,7 @@ const cards = [
   {
     title: "Alphabet Phonics",
     image: Alphabets,
-    route: "/animal-phonics",
+    route: "/phonics/alphabet",
     tooltip: "This is an Alphabet Phonic",
   },
   {

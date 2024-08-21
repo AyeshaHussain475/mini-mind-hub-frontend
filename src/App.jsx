@@ -17,6 +17,7 @@ import AttemptQuiz from "./containers/Quizzes/AttemptQuiz";
 import AnimalPhonics from "./containers/Phonics/Animal/Animals";
 import "./App.css";
 import Profile from "./containers/Profile/Profile";
+import Alphabet from "./containers/Phonics/Alphabet/Alphabet";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/" element={<Navigate to="/phonics" replace />} />
             <Route exact path="/phonics" element={<PhonicsPage />} />
             <Route exact path="/phonics/animal" element={<AnimalPhonics />} />
+            <Route exact path="/phonics/alphabet" element={<Alphabet />} />
             <Route
               exact
               path="/phonics/animal/create"
