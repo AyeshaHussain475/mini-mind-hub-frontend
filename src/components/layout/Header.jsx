@@ -45,10 +45,11 @@ const Header = () => {
   };
 
   const handleAction = (action) => {
-    if (action === 'Logout') {
+    if (action === "Logout") {
       localStorage.removeItem("user");
       navigate("/login");
     } else {
+      navigate("/profile");
       // handle cases for other items
     }
   };
@@ -174,8 +175,11 @@ const Header = () => {
           >
             {settings.map((setting) => (
               <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center" onClick={() => handleAction(setting)}>
-                    {setting}
+                <Typography
+                  textAlign="center"
+                  onClick={() => handleAction(setting)}
+                >
+                  {setting}
                 </Typography>
               </MenuItem>
             ))}

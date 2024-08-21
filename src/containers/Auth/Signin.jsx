@@ -52,7 +52,7 @@ export default function SignIn() {
       });
 
       localStorage.setItem("token", result.data.token);
-      localStorage.setItem("user", JSON.stringify(result.data.user));
+      localStorage.setItem("user", JSON.stringify(result.data.user[0]));
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + result.data.token;
 
