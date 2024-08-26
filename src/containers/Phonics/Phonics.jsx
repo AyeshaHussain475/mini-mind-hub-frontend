@@ -30,7 +30,7 @@ const cards = [
   {
     title: "Counting Phonics",
     image: Couting,
-    route: "/animal-phonics",
+    route: "/phonics/counting",
     tooltip: "This is an Alphabet Phonic",
   },
   {
@@ -42,7 +42,7 @@ const cards = [
   {
     title: "Instruments",
     image: Instruments,
-    route: "/animal-phonics",
+    route: "/phonics/instrument",
     tooltip: "This is an Alphabet Phonic",
   },
 ];
