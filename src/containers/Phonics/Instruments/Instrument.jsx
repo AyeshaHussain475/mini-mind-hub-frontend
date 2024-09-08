@@ -13,10 +13,28 @@ import {
   Pause as PauseIcon,
 } from "@mui/icons-material";
 import { useRef, useState } from "react";
+import axios from "../../../axios";
+import { toast } from "react-toastify";
 
-const Instrument = ({ name, image, sound }) => {
+const Instrument = ({ name, image, sound, id, refetch }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+
+  const handleDelete = async (id) => {
+    try {
+      const result = await axios.delete(`/instrument/media/${id}`);
+
+      if (!result) {
+        toast.error("Instrument is not deleted");
+      }
+      toast.success("Instrument is deleted successfully!");
+      if (refetch) {
+        refetch();
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
 
   const handleAudio = () => {
     if (isPlaying) {
@@ -88,6 +106,7 @@ const Instrument = ({ name, image, sound }) => {
               backgroundColor: "#ff5722",
             },
           }}
+          onClick={() => handleDelete(id)}
         >
           <DeleteIcon sx={{ fontSize: 30, color: "white" }} />
         </IconButton>

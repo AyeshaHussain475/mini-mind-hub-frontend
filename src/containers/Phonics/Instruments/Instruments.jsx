@@ -24,9 +24,9 @@ const Instruments = () => {
         <Typography
           style={{
             textAlign: "center",
-            fontFamily: "'Fredoka One', cursive", // Fun font for kids
+            fontFamily: "'Fredoka One', cursive",
             fontSize: "2.5rem",
-            color: "#FFFFFF", // Bright color
+            color: "#FFFFFF",
             textShadow: "2px 2px 4px purple",
             // margin: "20px 0",
             animation: "bounce 1s infinite",
@@ -71,13 +71,18 @@ const Instruments = () => {
           const sound = `http://localhost:7000/mini/media/${instrument.sound}`;
           return (
             <Grid item key={instrument._id}>
-              <Instrument name={instrument.name} image={image} sound={sound} />
+              <Instrument
+                name={instrument.name}
+                image={image}
+                sound={sound}
+                id={instrument._id}
+                refetch={instrumentsQuery.refetch}
+              />
             </Grid>
           );
         })}
       </Grid>
     </Box>
-    //play all and all plays
   );
 };
 
