@@ -16,6 +16,7 @@ import BackArrow from "../../../assets/arrow.webp";
 import {
   Audiotrack as AudiotrackIcon,
   Image as ImageIcon,
+  Close as CloseIcon,
 } from "@mui/icons-material";
 
 const AddInstrument = () => {
@@ -115,7 +116,14 @@ const AddInstrument = () => {
               onChange={(e) => setSound(e.target.files[0])}
             />
           </Button>
-          {sound && <span style={{ marginLeft: "8px" }}>{sound.name}</span>}
+          {sound && (
+            <Grid>
+              <span style={{ marginLeft: "8px" }}>{sound.name}</span>
+              <IconButton onClick={() => setSound("")}>
+                <CloseIcon style={{ color: "red" }} />
+              </IconButton>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       <Grid container mt={2}>
@@ -139,7 +147,15 @@ const AddInstrument = () => {
               onChange={(e) => setImage(e.target.files[0])}
             />
           </Button>
-          {image && <span style={{ marginLeft: "8px" }}> {image.name}</span>}
+          {image && (
+            <Grid container mt={3}>
+              <img src={URL.createObjectURL(image)} width={50} height={50} />
+              <span style={{ marginLeft: "8px" }}> {image.name}</span>
+              <IconButton onClick={() => setImage("")}>
+                <CloseIcon style={{ color: "red" }} />
+              </IconButton>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       <Grid container xs={8} mt={10} alignItems="center" marginLeft={30}>

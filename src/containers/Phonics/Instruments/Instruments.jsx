@@ -19,6 +19,7 @@ const Instruments = () => {
   const navigate = useNavigate();
 
   return (
+    // px: 2
     <Box sx={{ backgroundColor: "#f0f8ff", minHeight: "100vh" }}>
       <div style={{ backgroundColor: "#9d9db8" }}>
         <Typography
@@ -36,9 +37,8 @@ const Instruments = () => {
         </Typography>
       </div>
       {/* <Loader /> */}
-      {/* Search textfield and Add Button plus Arrow*/}
 
-      <Grid container justifyContent="space-around" mt={2}>
+      <Grid container justifyContent="space-between" alignItems="center" mt={2}>
         <Grid item>
           <IconButton
             sx={{
@@ -51,9 +51,7 @@ const Instruments = () => {
             <img src={BackArrow} style={{ width: "80px", height: "80px" }} />
           </IconButton>
         </Grid>
-        <Grid item>
-          <TextField></TextField>
-        </Grid>
+
         <Grid item>
           <Button
             variant="contained"
@@ -65,7 +63,14 @@ const Instruments = () => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={5} sx={{ marginTop: "10px" }}>
+      <Grid
+        container
+        spacing={3} // Adjusts the gap between items
+        sx={{
+          maxWidth: "95%", 
+          margin: "0 auto", // Centers the grid within the container
+        }}
+      >
         {instrumentsQuery.data?.instruments.map((instrument) => {
           const image = `http://localhost:7000/mini/media/${instrument.image}`;
           const sound = `http://localhost:7000/mini/media/${instrument.sound}`;
