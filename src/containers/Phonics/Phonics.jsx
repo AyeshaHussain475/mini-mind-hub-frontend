@@ -55,9 +55,10 @@ const MainPhonicsPage = () => {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        gap: "16px",
+        gap: "24px",
         justifyContent: "center",
-        marginTop: "20px",
+        marginTop: "40px",
+        padding: "20px",
       }}
     >
       {cards.map((card, index) => (
@@ -66,7 +67,7 @@ const MainPhonicsPage = () => {
             <CardActionArea onClick={() => navigate(card.route)}>
               <CardMedia
                 component="img"
-                height="140"
+                height="100"
                 image={card.image}
                 alt={card.title}
               />

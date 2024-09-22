@@ -16,6 +16,8 @@ const pages = [
   { label: "Phonics", link: "/phonics" },
   { label: "StoryImages", link: "" },
   { label: "Quiz", link: "/quizzes" },
+  { label: "Canvas", link: "/canvas" },
+  { label: "Games", link: "/games" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 

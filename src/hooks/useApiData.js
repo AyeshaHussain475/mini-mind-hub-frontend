@@ -15,6 +15,7 @@ export const useApiData = (url, errorMessage = "Failed to fetch data") => {
 
       if (result.statusText === "OK") {
         setData(result.data);
+        console.log(result.data);
       } else {
         toast.error(errorMessage);
       }
