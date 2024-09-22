@@ -5,7 +5,10 @@ import flippedSound from "../../assets/flipSound.mp3";
 
 const Card = ({ card, handleChoice, flipped, disabled }) => {
   const audioRef = useRef(null);
+
   const handleClick = () => {
+    if (!handleChoice) return;
+
     if (!disabled) {
       audioRef.current.play();
       handleChoice(card);

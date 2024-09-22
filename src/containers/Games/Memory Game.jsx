@@ -1,5 +1,16 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Banjo from "../../assets/Banjo.jpg";
 import Cymbals from "../../assets/Cymbals.jpg";
 import Drum from "../../assets/drum.jpg";
@@ -8,6 +19,8 @@ import Harp from "../../assets/Harp.jpg";
 import Trumpet from "../../assets/Trumpet.jpg";
 import Card from "./Card";
 import GameStart from "../../assets/GameStart.mp3";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const cardImages = [
   { img: Banjo, matched: false },
@@ -19,11 +32,15 @@ const cardImages = [
 ];
 
 const MemoryGame = () => {
+  const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [disabled, setDisabled] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const audioRef = useRef(null);
 
   const playAudio = () => {
@@ -32,11 +49,18 @@ const MemoryGame = () => {
     }
   };
 
+  const hasUserWon = useMemo(() => {
+    return cards.length > 0 && cards.every((c) => c.matched);
+  }, [cards]);
+
   const shuffleCards = () => {
     playAudio();
     const shuffledCards = [...cardImages, ...cardImages]
       .sort(() => Math.random() - 0.5)
-      .map((card) => ({ ...card, id: Math.random() }));
+      .map((card, index) => ({
+        ...card,
+        id: index,
+      }));
 
     setChoiceOne(null);
     setChoiceTwo(null);
@@ -45,7 +69,6 @@ const MemoryGame = () => {
   };
 
   const handleChoice = (card) => {
-    console.log(card, "clicked");
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
@@ -53,7 +76,6 @@ const MemoryGame = () => {
     if (choiceOne && choiceOne.img && choiceTwo && choiceTwo.img) {
       setDisabled(true);
       if (choiceOne.img === choiceTwo.img) {
-        console.log("matched", choiceOne.img, choiceTwo.img);
         setCards((prevCards) => {
           return prevCards.map((card) => {
             if (card.img === choiceOne.img) {
@@ -63,40 +85,32 @@ const MemoryGame = () => {
             }
           });
         });
-        setChoiceOne(null);
-        setChoiceTwo(null);
-        setTurns((prevTurn) => prevTurn + 1);
-        setDisabled(false);
+        resetTurn();
       } else {
         console.log("not matched");
         setTimeout(() => {
-          setChoiceOne(null);
-          setChoiceTwo(null);
-          setTurns((prevTurn) => prevTurn + 1);
-          setDisabled(false);
+          resetTurn();
         }, 1000);
       }
     }
   }, [choiceOne, choiceTwo]);
 
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns((prevTurn) => prevTurn + 1);
+    setDisabled(false);
+  };
+
   useEffect(() => {
     shuffleCards();
   }, []);
-
-  // useEffect(() => {
-  //   cards.forEach((card) => {
-  //     if (card.matched === true) {
-  //       console.log("all matched!");
-  //     }
-  //     shuffleCards();
-  //   });
-  // }, []);
 
   return (
     <Box
       sx={{
         maxWidth: "860px",
-        margin: "5px auto",
+        margin: "auto auto",
         textAlign: "center",
       }}
     >
@@ -116,7 +130,6 @@ const MemoryGame = () => {
           </Typography>
         </Grid>
         <Grid item>
-          {" "}
           <Button
             variant="contained"
             sx={{
@@ -130,21 +143,38 @@ const MemoryGame = () => {
         </Grid>
       </Grid>
 
-      {/* Grid for displaying cards */}
       <Grid container spacing={2} sx={{ marginTop: "10px" }}>
         {cards.map((card) => {
+          const isFlipped =
+            card.id === choiceOne?.id ||
+            card.id === choiceTwo?.id ||
+            card.matched;
+
           return (
             <Card
               card={card}
               key={card.id}
-              handleChoice={handleChoice}
-              flipped={card === choiceOne || card === choiceTwo || card.matched}
+              handleChoice={!isFlipped ? handleChoice : null}
+              flipped={isFlipped}
               disabled={disabled}
             />
           );
         })}
       </Grid>
       <Typography variant="h5">Turns: {turns}</Typography>
+      {hasUserWon && (
+        <>
+          <Dialog open={true} onClose={shuffleCards}>
+            <DialogTitle>
+              Congratulations! {user.firstName} You Have Won The Game
+            </DialogTitle>
+            <DialogActions>
+              <Button onClick={shuffleCards}>New Game</Button>
+              <Button onClick={() => navigate(-1)}>Back To Games</Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      )}
     </Box>
   );
 };
