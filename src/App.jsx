@@ -18,6 +18,13 @@ import AnimalPhonics from "./containers/Phonics/Animal/Animals";
 import "./App.css";
 import Profile from "./containers/Profile/Profile";
 import Alphabet from "./containers/Phonics/Alphabet/Alphabet";
+import Counting from "./containers/Phonics/Counting/Counting";
+import Canvas from "./containers/Canvas/Canvas";
+import Instruments from "./containers/Phonics/Instruments/Instruments";
+import AddInstrument from "./containers/Phonics/Instruments/AddInstrument";
+import EditInstrument from "./containers/Phonics/Instruments/EditInstrument";
+import Games from "./containers/Games/Games";
+import MemoryGame from "./containers/Games/Memory Game";
 
 function App() {
   return (
@@ -33,6 +40,19 @@ function App() {
             <Route exact path="/phonics" element={<PhonicsPage />} />
             <Route exact path="/phonics/animal" element={<AnimalPhonics />} />
             <Route exact path="/phonics/alphabet" element={<Alphabet />} />
+            <Route exact path="/phonics/counting" element={<Counting />} />
+            <Route exact path="/phonics/instrument" element={<Instruments />} />
+            <Route
+              exact
+              path="/phonics/instrument/:id/edit"
+              element={<EditInstrument />}
+            />
+            <Route
+              exact
+              path="/phonics/instrument/create"
+              element={<AddInstrument />}
+            />
+            <Route exact path="/canvas" element={<Canvas />} />
             <Route
               exact
               path="/phonics/animal/create"
@@ -45,6 +65,9 @@ function App() {
               element={<AttemptQuiz />}
             />
             <Route exact path="/quizzes/:quizId/edit" element={<EditQuiz />} />
+            <Route exact path="/games" element={<Games />} />
+            <Route exact path="/memoryGame" element={<MemoryGame />} />
+            {/* /memoryGame */}
           </Route>
         </Route>
       </Routes>
