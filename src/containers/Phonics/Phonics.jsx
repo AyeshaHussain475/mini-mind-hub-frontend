@@ -7,9 +7,10 @@ import {
   CardContent,
   Typography,
   Tooltip,
+  Paper,
 } from "@mui/material";
 import Animals from "../../assets/animals.jpg";
-import Alphabets from "../../assets/alphabets.jpg";
+import Alphabets from "../../assets/letters.png";
 import Peoms from "../../assets/peoms.png";
 import Instruments from "../../assets/instruments.jpg";
 import Couting from "../../assets/couting.jpg";
@@ -19,31 +20,31 @@ const cards = [
     title: "Animal Phonics",
     image: Animals,
     route: "/phonics/animal",
-    tooltip: "This is an Animal Phonic",
+    tooltip: "Learn animal sounds with phonics!",
   },
   {
     title: "Alphabet Phonics",
     image: Alphabets,
     route: "/phonics/alphabet",
-    tooltip: "This is an Alphabet Phonic",
+    tooltip: "Master the alphabet with fun phonics!",
   },
   {
     title: "Counting Phonics",
     image: Couting,
     route: "/phonics/counting",
-    tooltip: "This is an Alphabet Phonic",
+    tooltip: "Learn numbers with phonics!",
   },
   {
     title: "Poems",
     image: Peoms,
     route: "/animal-phonics",
-    tooltip: "This is an Alphabet Phonic",
+    tooltip: "Enjoy phonics with poems!",
   },
   {
     title: "Instruments",
     image: Instruments,
     route: "/phonics/instrument",
-    tooltip: "This is an Alphabet Phonic",
+    tooltip: "Discover musical instruments with phonics!",
   },
 ];
 
@@ -54,32 +55,68 @@ const MainPhonicsPage = () => {
     <div
       style={{
         display: "flex",
-        flexWrap: "wrap",
-        gap: "24px",
         justifyContent: "center",
-        marginTop: "40px",
+        flexDirection: "column",
+        alignItems: "center",
         padding: "20px",
+        background: "linear-gradient(135deg, #f2f2fc, #d1eaff)",
+        // minHeight: "100vh"
       }}
     >
-      {cards.map((card, index) => (
-        <Tooltip title={card.tooltip} key={index} arrow>
-          <Card sx={{ maxWidth: 250, minWidth: 200 }}>
-            <CardActionArea onClick={() => navigate(card.route)}>
-              <CardMedia
-                component="img"
-                height="100"
-                image={card.image}
-                alt={card.title}
-              />
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  {card.title}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Tooltip>
-      ))}
+      <div style={{ marginBottom: "40px" }}>
+        <Typography
+          variant="h3"
+          component="div"
+          style={{
+            color: "brown",
+            fontWeight: "bold",
+            textShadow: "2px 2px 4px #ffb9f8",
+            fontFamily: "'Fredoka One', cursive",
+          }}
+        >
+          Let's Learn Phonics
+        </Typography>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "24px",
+          justifyContent: "center",
+        }}
+      >
+        {cards.map((card, index) => (
+          <Paper
+            key={index}
+            elevation={15}
+            style={{
+              height: "310px",
+              width: "400px",
+              borderRadius: "30px",
+              transition: "transform 0.3s, box-shadow 0.3s",
+              overflow: "hidden",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.05)")
+            }
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            <Tooltip title={card.tooltip} arrow>
+              <Card>
+                <CardActionArea onClick={() => navigate(card.route)}>
+                  <CardMedia
+                    component="img"
+                    image={card.image}
+                    alt={card.title}
+                    style={{ height: "310px", objectFit: "contain" }}
+                  />
+                </CardActionArea>
+              </Card>
+            </Tooltip>
+          </Paper>
+        ))}
+      </div>
     </div>
   );
 };
