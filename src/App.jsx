@@ -25,6 +25,7 @@ import AddInstrument from "./containers/Phonics/Instruments/AddInstrument";
 import EditInstrument from "./containers/Phonics/Instruments/EditInstrument";
 import Games from "./containers/Games/Games";
 import MemoryGame from "./containers/Games/Memory Game";
+import Poems from "./containers/Phonics/Poems";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
             <Route exact path="/quizzes/:quizId/edit" element={<EditQuiz />} />
             <Route exact path="/games" element={<Games />} />
             <Route exact path="/memoryGame" element={<MemoryGame />} />
+            <Route exact path="/phonics/poems" element={<Poems />} />
             {/* /memoryGame */}
           </Route>
         </Route>

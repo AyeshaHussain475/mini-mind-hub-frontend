@@ -189,3 +189,49 @@ code {
     transform: translateY(-15px);
   }
 }
+
+@keyframes bg-animation {
+  0% {
+    background: linear-gradient(to right, #e1ffb1, #8cdf06);
+  }
+  25% {
+    background: linear-gradient(to right, #d0ebff, #0abbe7);
+  }
+  50% {
+    background: linear-gradient(to right, #a1e4ff, #0a7bbf);
+  }
+  75% {
+    background: linear-gradient(to right, #fbd3e9, #bb377d);
+  }
+  100% {
+    background: linear-gradient(to right, #edc0e5, #bc059a);
+  }
+}
+
+.page-background {
+  position: relative;
+  overflow: hidden;
+}
+
+.moving-circle {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(255, 0, 255, 0.6);
+  border-radius: 50%;
+  animation: move-circle 4s infinite alternate ease-in-out;
+}
+
+@keyframes move-circle {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(300px) translateY(100px);
+  }
+  100% {
+    transform: translateX(0) translateY(200px);
+  }
+}

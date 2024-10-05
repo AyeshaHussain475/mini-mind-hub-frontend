@@ -8,12 +8,14 @@ import {
   Typography,
   Tooltip,
   Paper,
+  IconButton,
 } from "@mui/material";
 import Animals from "../../assets/animals.jpg";
 import Alphabets from "../../assets/letters.png";
 import Peoms from "../../assets/peoms.png";
 import Instruments from "../../assets/instruments.jpg";
 import Couting from "../../assets/couting.jpg";
+import BackArrow from "../../assets/arrow.webp";
 
 const cards = [
   {
@@ -37,7 +39,7 @@ const cards = [
   {
     title: "Poems",
     image: Peoms,
-    route: "/animal-phonics",
+    route: "/phonics/poems",
     tooltip: "Enjoy phonics with poems!",
   },
   {
@@ -63,7 +65,27 @@ const MainPhonicsPage = () => {
         // minHeight: "100vh"
       }}
     >
-      <div style={{ marginBottom: "40px" }}>
+      <div
+        style={{
+          justifyContent: "space-between",
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <div>
+          <IconButton
+            sx={{
+              "&:hover": {
+                backgroundColor: "#CBC3E3",
+              },
+            }}
+            onClick={() => navigate("-1")}
+          >
+            <img src={BackArrow} style={{ width: "80px", height: "80px" }} />
+          </IconButton>
+        </div>
+
         <Typography
           variant="h3"
           component="div"
@@ -72,12 +94,16 @@ const MainPhonicsPage = () => {
             fontWeight: "bold",
             textShadow: "2px 2px 4px #ffb9f8",
             fontFamily: "'Fredoka One', cursive",
+            flex: 1,
+            marginLeft: "20px",
+            textAlign: "center",
+            marginRight: "20px",
+            marginBottom: "20px",
           }}
         >
           Let's Learn Phonics
         </Typography>
       </div>
-
       <div
         style={{
           display: "flex",
