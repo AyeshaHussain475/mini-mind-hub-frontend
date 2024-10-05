@@ -15,7 +15,7 @@ import {
   DialogActions,
   Slide,
 } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useApiData } from "../../hooks/useApiData";
 import BackArrow from "../../assets/arrow.webp";
 import { useNavigate } from "react-router-dom";
@@ -30,15 +30,23 @@ const Poems = () => {
   const poemsQuery = useApiData("/poems/media");
   const navigate = useNavigate();
   const audioRef = useRef(null);
+  const videosRef = useRef([]);
+  const [poem, setPoem] = useState();
 
-  const [open, setOpen] = React.useState(false);
+  const handlePlay = (index) => {
+    videosRef.current.forEach((video, idx) => {
+      if (idx !== index && video) {
+        video.pause();
+      }
+    });
+  };
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleDeletePoem = (poem) => {
+    setPoem(poem);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setPoem(null);
   };
 
   const generateRandomColors = () => {
@@ -104,9 +112,8 @@ const Poems = () => {
         </Grid>
 
         <Grid container spacing={3} textAlign="center" justifyContent="center">
-          {poemsQuery.data?.poems?.map((poem) => {
+          {poemsQuery.data?.poems?.map((poem, index) => {
             const video = `http://localhost:7000/mini/media/${poem.video}`;
-
             return (
               <Grid item key={poem._id}>
                 <Paper
@@ -125,7 +132,12 @@ const Poems = () => {
                 >
                   <Card sx={{ maxWidth: "410px", borderRadius: "20px" }}>
                     <CardMedia title={poem.name}>
-                      <video width={410} controls>
+                      <video
+                        controls
+                        width={410}
+                        ref={(el) => (videosRef.current[index] = el)}
+                        onPlay={() => handlePlay(index)}
+                      >
                         <source src={video} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
@@ -157,7 +169,7 @@ const Poems = () => {
                             },
                             borderRadius: "10px",
                           }}
-                          onClick={handleClickOpen}
+                          onClick={() => handleDeletePoem(poem)}
                         >
                           <DeleteIcon sx={{ fontSize: 25, color: "white" }} />
                         </IconButton>
@@ -174,24 +186,6 @@ const Poems = () => {
                           <EditIcon sx={{ fontSize: 25, color: "white" }} />
                         </IconButton>
                       </CardActions>
-                      <Dialog
-                        open={open}
-                        TransitionComponent={Transition}
-                        keepMounted
-                        onClose={handleClose}
-                        aria-describedby="alert-dialog-slide-description"
-                      >
-                        <DialogTitle>
-                          {`Are you sure you want to delete? ${poem.name}`}
-                        </DialogTitle>
-                        <DialogContent>
-                          <img src={emoji} />
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={handleClose}>Disagree</Button>
-                          <Button onClick={handleClose}>Agree</Button>
-                        </DialogActions>
-                      </Dialog>
                     </Box>
                   </Card>
                 </Paper>
@@ -200,6 +194,26 @@ const Poems = () => {
           })}
         </Grid>
       </div>
+      {Boolean(poem) && (
+        <Dialog
+          open
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>
+            {`Are you sure you want to delete? ${poem.name}`}
+          </DialogTitle>
+          <DialogContent>
+            <img src={emoji} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Disagree</Button>
+            <Button onClick={handleClose}>Agree</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 };
