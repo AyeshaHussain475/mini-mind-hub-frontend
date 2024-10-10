@@ -26,6 +26,7 @@ import EditInstrument from "./containers/Phonics/Instruments/EditInstrument";
 import Games from "./containers/Games/Games";
 import MemoryGame from "./containers/Games/Memory Game";
 import Poems from "./containers/Phonics/Poems";
+import Home from "./containers/Home/Home";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route exact path="/forgot-password" element={<ForgotPassword />} />
         <Route element={<RequireAuth />}>
           <Route element={<Layout />}>
+            <Route exact path="/" element={<Home />} />
             <Route exact path="/profile" element={<Profile />} />
             <Route path="/" element={<Navigate to="/phonics" replace />} />
             <Route exact path="/phonics" element={<PhonicsPage />} />
