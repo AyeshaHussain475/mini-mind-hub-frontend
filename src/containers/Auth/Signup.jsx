@@ -25,7 +25,8 @@ export default function SignUp() {
   const user = localStorage.getItem("user");
 
   if (user) {
-    <Navigate to="/phonics" />;
+    // <Navigate to="/phonics" />;
+    navigate("/phonics");
   }
 
   function Copyright(props) {

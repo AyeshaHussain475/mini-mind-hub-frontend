@@ -51,6 +51,8 @@ export default function SignIn() {
         password,
       });
 
+      console.log(result.data.user, "login user");
+
       localStorage.setItem("token", result.data.token);
       localStorage.setItem("user", JSON.stringify(result.data.user[0]));
       axios.defaults.headers.common["Authorization"] =
