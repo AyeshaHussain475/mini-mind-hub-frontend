@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
   const getUsers = async () => {
     try {
       const result = await axios.get("/users");
@@ -30,16 +31,14 @@ const Dashboard = () => {
   useEffect(() => {
     getUsers();
   }, []);
-  // Sample list of users with emails
-  const [users, setUsers] = useState([
-    { id: 1, name: "Alice", email: "alice@example.com" },
-    { id: 2, name: "Bob", email: "bob@example.com" },
-    { id: 3, name: "Charlie", email: "charlie@example.com" },
-  ]);
 
-  // Delete a user by ID
-  const deleteUser = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
+  const deleteUser = async (id) => {
+    const result = await axios.delete(`/user/${id}`);
+
+    if (result.status === 200) {
+      toast.success("User is deleted successfully!");
+    }
+    getUsers();
   };
 
   return (
@@ -53,6 +52,7 @@ const Dashboard = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell align="center">ID</TableCell>
               <TableCell align="center">FirstName</TableCell>
               <TableCell align="center">LastName</TableCell>
               <TableCell align="center">Email</TableCell>
@@ -62,11 +62,12 @@ const Dashboard = () => {
           </TableHead>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.id}>
+              <TableRow key={user._id}>
+                <TableCell align="center">{user._id}</TableCell>
                 <TableCell align="center">{user.firstName}</TableCell>
                 <TableCell align="center">{user.lastName}</TableCell>
-                <TableCell align="center">{user.role}</TableCell>
                 <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">{user.role}</TableCell>
 
                 {user.role === "admin" ? (
                   <TableCell align="center">
@@ -83,23 +84,12 @@ const Dashboard = () => {
                     <Button
                       variant="contained"
                       color="secondary"
-                      onClick={() => deleteUser(user.id)}
+                      onClick={() => deleteUser(user._id)}
                     >
                       {user.role === "admin" ? "Profile" : "Delete"}
                     </Button>
                   </TableCell>
                 )}
-
-                {/* {user.role === "admin" ? onClick(()=>) : ""} */}
-                {/* <TableCell align="center">
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => deleteUser(user.id)}
-                  >
-                    {user.role === "admin" ? "Profile" : "Delete"}
-                  </Button>
-                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
