@@ -14,6 +14,7 @@ import {
   Tooltip,
   Typography,
   Pagination,
+  IconButton,
 } from "@mui/material";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -29,8 +30,12 @@ import Fish from "../../../assets/fish.png";
 import Reptiles from "../../../assets/reptiles.png";
 import All from "../../../assets/all.png";
 import Loader from "../../../components/Loader";
+import BackArrow from "../../../assets/arrow.webp";
 
 const AnimalPhonics = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user, "user details");
+
   const navigate = useNavigate();
   const textFieldRef = useRef(null);
 
@@ -78,17 +83,31 @@ const AnimalPhonics = () => {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "space-between",
           gap: 1,
         }}
       >
+        <IconButton
+          sx={{
+            "&:hover": {
+              backgroundColor: "#CBC3E3",
+            },
+          }}
+          onClick={() => navigate("/phonics")}
+        >
+          <img src={BackArrow} style={{ width: "80px", height: "80px" }} />
+        </IconButton>
         <Typography
-          style={{ color: "purple", fontSize: "25px" }}
-          align="center"
+          style={{
+            color: "purple",
+            fontSize: "25px",
+            flexGrow: 1,
+            textAlign: "center",
+          }}
         >
           Animal Phonics
+          <img src={img} style={{ width: "40px", height: "40px" }} />
         </Typography>
-        <img src={img} style={{ width: "60px", height: "60px" }} />
       </Box>
       <Grid
         container
@@ -140,24 +159,26 @@ const AnimalPhonics = () => {
             </ToggleButtonGroup>
           </FormControl>
         </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            onClick={() => navigate("/phonics/animal/create")}
-          >
-            Add Animal
-          </Button>
-        </Grid>
+        {user.role === "admin" && (
+          <Grid item>
+            <Button
+              variant="contained"
+              onClick={() => navigate("/phonics/animal/create")}
+            >
+              Add Animal
+            </Button>
+          </Grid>
+        )}
       </Grid>
       {animalQuery.isLoading && <Loader />}
-      <Grid container spacing={2} mb={2}>
+      <Grid container spacing={1} mb={2}>
         {!animalQuery.isLoading &&
           animalQuery.data?.animals.map((animal) => {
             const primaryImage = animal.images.find((image) => image.isPrimary);
             const imageUrl = `http://localhost:7000/mini/media/${primaryImage?.name}`;
             const audioUrl = `http://localhost:7000/mini/media/${animal.sound}`;
             return (
-              <Grid item xs={4} key={animal._id}>
+              <Grid item xs={3} key={animal._id}>
                 <Animal
                   title={animal.name}
                   imageUrl={imageUrl}

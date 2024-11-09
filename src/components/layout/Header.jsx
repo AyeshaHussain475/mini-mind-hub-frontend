@@ -8,8 +8,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/logo.jpeg";
+import { Grid } from "@mui/material";
 
 const pages = [
   { label: "Quran", link: "" },
@@ -19,10 +21,15 @@ const pages = [
   { label: "Canvas", link: "/canvas" },
   { label: "Games", link: "/games" },
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
   const navigate = useNavigate();
+  const [settings, setSettings] = useState([
+    "Profile",
+    "Account",
+    "Dashboard",
+    "Logout",
+  ]);
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -30,6 +37,10 @@ const Header = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (!user) return null;
+
+  if (user.role === "admin") {
+    settings.push("Dashboard");
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -50,32 +61,48 @@ const Header = () => {
     if (action === "Logout") {
       localStorage.removeItem("user");
       navigate("/login");
-    } else {
+    }
+    if (action === "Profile") {
       navigate("/profile");
-      // handle cases for other items
+    }
+    if (action === "Dashboard") {
+      navigate("/dashboard");
     }
   };
+
+  // useEffect(() => {
+  //   if (user.role === "admin") {
+  //     setSettings((prev) => [...prev, "Dashboard"]);
+  //   }
+  // }, []);
 
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <Typography
-          variant="h6"
-          noWrap
-          component="a"
-          href="#app-bar-with-responsive-menu"
-          sx={{
-            mr: 2,
-            display: { xs: "none", md: "flex" },
-            fontFamily: "monospace",
-            fontWeight: 700,
-            letterSpacing: ".3rem",
-            color: "inherit",
-            textDecoration: "none",
-          }}
-        >
-          MiniMind Hub
-        </Typography>
+        <Grid container>
+          <Grid item>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="#app-bar-with-responsive-menu"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              MiniMind Hub
+            </Typography>
+          </Grid>
+          {/* <Grid item>
+            <img src={logo} width="50px" style={{ borderRadius: "20px" }} />
+          </Grid> */}
+        </Grid>
         <Box
           sx={{
             flexGrow: 1,

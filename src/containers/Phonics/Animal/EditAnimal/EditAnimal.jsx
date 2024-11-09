@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useApiData } from "../../../../hooks/useApiData";
 import axios from "../../../../axios";
 import {
@@ -12,13 +12,16 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import { label } from "framer-motion/client";
 import {
   PlayArrow as PlayArrowIcon,
   Pause as PauseIcon,
 } from "@mui/icons-material";
-
+import { toast } from "react-toastify";
+import { Close as CloseIcon } from "@mui/icons-material";
+import BackArrow from "../../../../assets/arrow.webp";
 const EditAnimal = () => {
   // isPrimary work is not done yet M
   const { id } = useParams();
@@ -54,25 +57,84 @@ const EditAnimal = () => {
 
   const getAnimal = async () => {
     const result = await axios.get(`/animal/media/${id}`);
-    console.log(result, "Result of animal");
+    console.log(result.data, "animal data");
     setName(result.data.animal.name);
     setImages(
       `http://localhost:7000/mini/media/${result.data.animal.images[0].name}`
     );
+    setImageFile(
+      `http://localhost:7000/mini/media/${result.data.animal.images[0]}`
+    );
     setImageName(result.data.animal.images[0].name);
     setSoundName(result.data.animal.sound); //soundName
-    setSound(`http://localhost:7000/mini/media/${result.data.animal.sound}`); //retriving that sound from this url
+    setSound(`http://localhost:7000/mini/media/${result.data.animal.sound}`);
+    setSoundFile(
+      `http://localhost:7000/mini/media/${result.data.animal.sound}`
+    ); //retriving that sound from this url
     setDescription(result.data.animal.description);
     setType(result.data.animal.type);
   };
 
+  const navigate = useNavigate();
+
+  const editAnimal = async () => {
+    if (!name || !soundFile || !imageFile || !type || !description) {
+      toast.warning("Fill the missing enteries!");
+      return;
+    }
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("sound", soundFile);
+    formData.append("images", imageFile);
+    formData.append("type", type);
+    formData.append("description", description);
+
+    try {
+      const res = await axios.put(`animal/media/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.status === 200) {
+        toast.success("Animal is updated sucessfully");
+        setTimeout(() => {
+          navigate("/phonics/animal");
+        }, 2000);
+      }
+    } catch (error) {}
+  };
   useEffect(() => {
     getAnimal();
   }, [id]);
 
   return (
-    <Box component="form" style={{ marginLeft: "10%" }}>
-      <h1>Edit Animal</h1>
+    <Box
+      component="form"
+      style={{
+        marginLeft: "10%",
+      }}
+    >
+      <IconButton
+        sx={{
+          "&:hover": {
+            backgroundColor: "#CBC3E3",
+          },
+        }}
+        onClick={() => navigate("/phonics/animal")}
+      >
+        <img src={BackArrow} style={{ width: "80px", height: "80px" }} />
+      </IconButton>
+      <Typography
+        style={{
+          fontFamily: "'Fredoka One', cursive",
+          fontSize: "2.0rem",
+          color: "black",
+          textShadow: "2px 2px 5px purple",
+          marginBottom: "15px",
+        }}
+      >
+        Edit Animal
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <TextField
@@ -139,25 +201,28 @@ const EditAnimal = () => {
             {sound && (
               <>
                 <span style={{ marginLeft: 8 }}>{soundName}</span>
+                <audio ref={audioRef} src={sound} />
+                {isPlaying ? (
+                  <IconButton onClick={handleAudio}>
+                    <PlayArrowIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={handleAudio}>
+                    <PauseIcon />
+                  </IconButton>
+                )}
+                <IconButton
+                  sx={{ color: "red" }}
+                  onClick={() => {
+                    setSound("");
+                    setSoundFile("");
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
               </>
             )}
           </Box>
-        </Grid>
-        <Grid container>
-          <Grid item xs={4}>
-            <audio ref={audioRef} src={sound} />
-          </Grid>
-          <Grid item xs={4}>
-            {isPlaying ? (
-              <IconButton onClick={handleAudio}>
-                <PlayArrowIcon />
-              </IconButton>
-            ) : (
-              <IconButton onClick={handleAudio}>
-                <PauseIcon />
-              </IconButton>
-            )}
-          </Grid>
         </Grid>
 
         <Grid item xs={8}>
@@ -190,12 +255,23 @@ const EditAnimal = () => {
             <>
               <img src={images} style={{ width: "100px" }} />
               <span style={{ marginLeft: 8 }}>{imageName}</span>
+              <IconButton
+                sx={{ color: "red" }}
+                onClick={() => {
+                  setImages("");
+                  setImageFile("");
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
             </>
           )}
         </Grid>
         <Grid item container xs={12} alignItems="flex-end">
           <Grid item xs={8} />
-          <Button variant="contained">Edit Animal</Button>
+          <Button variant="contained" onClick={editAnimal}>
+            Edit Animal
+          </Button>
         </Grid>
       </Grid>
     </Box>

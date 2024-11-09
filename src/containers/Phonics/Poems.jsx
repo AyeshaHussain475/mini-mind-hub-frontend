@@ -27,6 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const Poems = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const poemsQuery = useApiData("/poems/media");
   const navigate = useNavigate();
   const audioRef = useRef(null);
@@ -109,6 +110,14 @@ const Poems = () => {
               Poems
             </Typography>
           </Grid>
+
+          {user.role === "admin" && (
+            <Grid item xs={12}>
+              <Box display="flex" justifyContent="flex-end">
+                <Button variant="contained">Add Poem</Button>
+              </Box>
+            </Grid>
+          )}
         </Grid>
 
         <Grid container spacing={3} textAlign="center" justifyContent="center">
@@ -160,32 +169,34 @@ const Poems = () => {
                       >
                         {poem.name}
                       </Typography>
-                      <CardActions sx={{ gap: "10px" }}>
-                        <IconButton
-                          sx={{
-                            backgroundColor: "#ff7043",
-                            "&:hover": {
-                              backgroundColor: "#ff5722",
-                            },
-                            borderRadius: "10px",
-                          }}
-                          onClick={() => handleDeletePoem(poem)}
-                        >
-                          <DeleteIcon sx={{ fontSize: 25, color: "white" }} />
-                        </IconButton>
-                        <IconButton
-                          sx={{
-                            backgroundColor: "#66bb6a",
-                            "&:hover": {
-                              backgroundColor: "#43a047",
-                            },
-                            borderRadius: "10px",
-                          }}
-                          // onClick={() => navigate(`/phonics/instrument/${id}/edit`)}
-                        >
-                          <EditIcon sx={{ fontSize: 25, color: "white" }} />
-                        </IconButton>
-                      </CardActions>
+                      {user.role === "admin" && (
+                        <CardActions sx={{ gap: "10px" }}>
+                          <IconButton
+                            sx={{
+                              backgroundColor: "#ff7043",
+                              "&:hover": {
+                                backgroundColor: "#ff5722",
+                              },
+                              borderRadius: "10px",
+                            }}
+                            onClick={() => handleDeletePoem(poem)}
+                          >
+                            <DeleteIcon sx={{ fontSize: 25, color: "white" }} />
+                          </IconButton>
+                          <IconButton
+                            sx={{
+                              backgroundColor: "#66bb6a",
+                              "&:hover": {
+                                backgroundColor: "#43a047",
+                              },
+                              borderRadius: "10px",
+                            }}
+                            // onClick={() => navigate(`/phonics/instrument/${id}/edit`)}
+                          >
+                            <EditIcon sx={{ fontSize: 25, color: "white" }} />
+                          </IconButton>
+                        </CardActions>
+                      )}
                     </Box>
                   </Card>
                 </Paper>

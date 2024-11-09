@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Instrument = ({ name, image, sound, id, refetch }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
@@ -101,28 +102,32 @@ const Instrument = ({ name, image, sound, id, refetch }) => {
             <PlayArrowIcon sx={{ fontSize: 30, color: "#5c6bc0" }} />
           )}
         </IconButton>
-        <IconButton
-          sx={{
-            backgroundColor: "#ff7043",
-            "&:hover": {
-              backgroundColor: "#ff5722",
-            },
-          }}
-          onClick={() => handleDelete(id)}
-        >
-          <DeleteIcon sx={{ fontSize: 30, color: "white" }} />
-        </IconButton>
-        <IconButton
-          sx={{
-            backgroundColor: "#66bb6a",
-            "&:hover": {
-              backgroundColor: "#43a047",
-            },
-          }}
-          onClick={() => navigate(`/phonics/instrument/${id}/edit`)}
-        >
-          <EditIcon sx={{ fontSize: 30, color: "white" }} />
-        </IconButton>
+        {user.role === "admin" && (
+          <>
+            <IconButton
+              sx={{
+                backgroundColor: "#ff7043",
+                "&:hover": {
+                  backgroundColor: "#ff5722",
+                },
+              }}
+              onClick={() => handleDelete(id)}
+            >
+              <DeleteIcon sx={{ fontSize: 30, color: "white" }} />
+            </IconButton>
+            <IconButton
+              sx={{
+                backgroundColor: "#66bb6a",
+                "&:hover": {
+                  backgroundColor: "#43a047",
+                },
+              }}
+              onClick={() => navigate(`/phonics/instrument/${id}/edit`)}
+            >
+              <EditIcon sx={{ fontSize: 30, color: "white" }} />
+            </IconButton>
+          </>
+        )}
       </CardActions>
     </Card>
   );

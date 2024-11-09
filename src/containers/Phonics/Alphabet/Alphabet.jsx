@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Button, Grid, Paper, Typography } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { Button, Grid, IconButton, Paper, Typography } from "@mui/material";
+import BackArrow from "../../../assets/arrow.webp";
 import A from "../../../assets/A.png";
 import B from "../../../assets/B.png";
 import C from "../../../assets/C.png";
@@ -53,9 +54,12 @@ import x from "../../../assets/x.jpeg";
 import y from "../../../assets/y.jpeg";
 import z from "../../../assets/z.jpeg";
 
-import sound from "../../../assets/Cheetah2.mp3";
+import sound from "../../../assets/ABCSONG.mp4";
+import { useNavigate } from "react-router-dom";
 
 const Alphabet = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const navigate = useNavigate();
   const [images, setImages] = useState([
     { id: 1, front: A, back: a, flip: false },
     { id: 2, front: B, back: b, flip: false },
@@ -85,9 +89,15 @@ const Alphabet = () => {
     { id: 26, front: Z, back: z, flip: false },
   ]);
 
+  // const audio = useRef(null);
   const playSound = () => {
     const audio = new Audio(sound);
-    audio.play();
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
   };
 
   const handleSave = (image) => {
@@ -109,6 +119,10 @@ const Alphabet = () => {
     );
   };
 
+  const handleAbc = () => {
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <Grid
       container
@@ -119,55 +133,120 @@ const Alphabet = () => {
         padding: "20px",
         background: "linear-gradient(135deg, #fbc7d4, #9796f0)",
       }}
+      minHeight="100vh"
     >
-      <Grid item style={{ marginBottom: "20px" }}>
-        <Typography
-          variant="h3"
-          component="h1"
-          style={{
-            color: "rgba(71, 35, 107, 1)",
-            fontWeight: "bold",
-            textAlign: "center",
-            fontFamily: "'Comic Sans MS', cursive, sans-serif",
-            textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-          }}
+      <Grid item container>
+        <Grid item>
+          <IconButton
+            sx={{
+              "&:hover": {
+                backgroundColor: "#CBC3E3",
+              },
+            }}
+            onClick={() => navigate("/phonics")}
+          >
+            <img src={BackArrow} style={{ width: "80px", height: "80px" }} />
+          </IconButton>
+        </Grid>
+        <Grid
+          item
+          style={{ marginBottom: "20px" }}
+          justifyContent="center"
+          xs={11}
         >
-          Learn Alphabets with Us!
-        </Typography>
+          <Typography
+            variant="h3"
+            component="h1"
+            style={{
+              color: "rgba(71, 35, 107, 1)",
+              fontWeight: "bold",
+              textAlign: "center",
+              fontFamily: "'Comic Sans MS', cursive, sans-serif",
+              textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
+            }}
+          >
+            Learn Alphabets with Us!
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid item xs={12} style={{ textAlign: "center", marginBottom: "20px" }}>
+
+      <Grid
+        item
+        xs={12}
+        style={{ textAlign: "center", marginBottom: "5px", direction: "row" }}
+      >
         <Button onClick={handleAllFlip} variant="contained" color="primary">
           Click me and see the magic!
         </Button>
       </Grid>
       <Grid
-        container
-        spacing={2}
-        justifyContent="center"
-        alignItems="center"
-        style={{ width: "100%" }}
+        item
+        xs={12}
+        style={{ textAlign: "center", marginBottom: "5px", direction: "row" }}
       >
-        {images.map((image, index) => (
-          <Grid item xs={6} sm={4} md={2} key={index}>
-            <Paper
-              elevation={5}
-              style={{ padding: "10px", backgroundColor: "#fff5e1" }}
-              onClick={() => handleSave(image)}
-            >
-              <img
-                src={image.flip ? image.back : image.front}
-                // alt={`Letter ${String.fromCharCode(65 + index)}`}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                }}
-              />
-            </Paper>
-          </Grid>
-        ))}
+        <Typography
+          className="popup"
+          variant="h5"
+          component="h1"
+          style={{
+            color: "#d32f2",
+            fontWeight: "bold",
+            textAlign: "center",
+            fontFamily: "'Comic Sans MS', cursive, sans-serif",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
+            marginBottom: "2px",
+            cursor: "pointer",
+          }}
+          onClick={handleAbc}
+        >
+          {isPlaying ? "Read Abc" : "Hear Me Out!"}
+        </Typography>
+        {isPlaying ? (
+          <div className="popups">
+            <video width="600" height="600" controls>
+              <source src={sound} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        ) : (
+          <video width="600" height="600" controls hidden>
+            <source src={sound} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
       </Grid>
+      {isPlaying ? (
+        ""
+      ) : (
+        <Grid
+          container
+          spacing={2}
+          justifyContent="center"
+          alignItems="center"
+          style={{ width: "100%" }}
+        >
+          {images.map((image, index) => (
+            <Grid item xs={6} sm={4} md={2} key={index}>
+              <Paper
+                elevation={5}
+                style={{ padding: "10px", backgroundColor: "#fff5e1" }}
+                onClick={() => handleSave(image)}
+              >
+                <img
+                  src={image.flip ? image.back : image.front}
+                  // alt={`Letter ${String.fromCharCode(65 + index)}`}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "10px",
+                    cursor: "pointer",
+                  }}
+                />
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Grid>
   );
 };

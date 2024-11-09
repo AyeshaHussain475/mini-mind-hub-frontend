@@ -235,3 +235,41 @@ code {
     transform: translateX(0) translateY(200px);
   }
 }
+
+.popup {
+  animation: popUp 1s ease-in-out infinite;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+@keyframes popUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.popups {
+  animation: popUp 1s ease-in-out;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+@keyframes popUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@import "~aos/dist/aos.css";

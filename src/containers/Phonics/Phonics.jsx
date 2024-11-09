@@ -80,7 +80,7 @@ const MainPhonicsPage = () => {
                 backgroundColor: "#CBC3E3",
               },
             }}
-            onClick={() => navigate("-1")}
+            onClick={() => navigate("/")}
           >
             <img src={BackArrow} style={{ width: "80px", height: "80px" }} />
           </IconButton>

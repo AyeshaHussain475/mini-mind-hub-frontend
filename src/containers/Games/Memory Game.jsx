@@ -7,6 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  IconButton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -21,6 +22,7 @@ import Card from "./Card";
 import GameStart from "../../assets/GameStart.mp3";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import BackArrow from "../../assets/arrow.webp";
 
 const cardImages = [
   { img: Banjo, matched: false },
@@ -115,6 +117,7 @@ const MemoryGame = () => {
       }}
     >
       <audio src={GameStart} ref={audioRef} />
+
       <Grid container justifyContent="space-between">
         <Grid item>
           <Typography
@@ -139,6 +142,18 @@ const MemoryGame = () => {
             onClick={shuffleCards}
           >
             New Game
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            sx={{
+              mt: "10px",
+              backgroundColor: "blueViolet",
+            }}
+            onClick={() => navigate("/games")}
+          >
+            Back To Games
           </Button>
         </Grid>
       </Grid>

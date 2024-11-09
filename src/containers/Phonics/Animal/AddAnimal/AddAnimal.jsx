@@ -8,11 +8,14 @@ import {
   FormControl,
   InputLabel,
   Grid,
+  IconButton,
+  Typography,
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 import axios from "../../../../axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import BackArrow from "../../../../assets/arrow.webp";
 
 const animalTypes = [
   { label: "Mammals", value: "mammals" },
@@ -71,7 +74,26 @@ const AnimalForm = () => {
 
   return (
     <Box component="form" style={{ marginLeft: "10%" }}>
-      <h1>Add Animal</h1>
+      <IconButton
+        sx={{
+          "&:hover": {
+            backgroundColor: "#CBC3E3",
+          },
+        }}
+        onClick={() => navigate("/phonics/animal")}
+      >
+        <img src={BackArrow} style={{ width: "80px", height: "80px" }} />
+      </IconButton>
+      <Typography
+        style={{
+          fontFamily: "'Fredoka One', cursive",
+          fontSize: "2.0rem",
+          color: "black",
+          textShadow: "2px 2px 5px purple",
+        }}
+      >
+        Add Animal
+      </Typography>
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <TextField
@@ -137,7 +159,14 @@ const AnimalForm = () => {
               />
             </Button>
             {animalData.sound && (
-              <span style={{ marginLeft: 8 }}>{animalData.sound.name}</span>
+              <>
+                <span style={{ marginLeft: 8 }}>{animalData.sound.name}</span>
+                <div
+                  onClick={() => setAnimalData({ ...animalData, sound: "" })}
+                >
+                  <CloseIcon style={{ cursor: "pointer", color: "red" }} />
+                </div>
+              </>
             )}
           </Box>
         </Grid>

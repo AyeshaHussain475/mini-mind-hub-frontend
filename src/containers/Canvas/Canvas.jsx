@@ -18,8 +18,11 @@ import ReactPainter from "react-painter";
 import { ColorLens } from "@mui/icons-material";
 import pallete from "../../assets/pallete.jpg";
 import eraser from "../../assets/eraser.jpg";
+import BackArrow from "../../assets/arrow.webp";
+import { useNavigate } from "react-router-dom";
 
 const Canvas = () => {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -61,22 +64,40 @@ const Canvas = () => {
               textAlign="center"
               direction="column"
             >
-              <Grid item>
-                <Typography
-                  variant="h3"
-                  style={{
-                    marginBottom: "16px",
-                    fontSize: "3rem",
-                    fontWeight: "bold",
-                    color: "#ff6347", // Bright tomato color
-                    textShadow: "3px 3px 0 #fff, 6px 6px 0 #ffeb3b", // Shadow with a playful yellow
-                    fontFamily: "'Comic Sans MS', cursive, sans-serif", // Fun, child-friendly font
-                    textAlign: "center",
-                    lineHeight: "1.2",
-                  }}
-                >
-                  Play with Paints
-                </Typography>
+              <Grid container>
+                <Grid item>
+                  <IconButton
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#CBC3E3",
+                      },
+                    }}
+                    onClick={() => navigate("/")}
+                  >
+                    <img
+                      src={BackArrow}
+                      style={{ width: "80px", height: "80px" }}
+                    />
+                  </IconButton>
+                </Grid>
+
+                <Grid item xs={10}>
+                  <Typography
+                    variant="h3"
+                    style={{
+                      marginBottom: "16px",
+                      fontSize: "3rem",
+                      fontWeight: "bold",
+                      color: "#ff6347", // Bright tomato color
+                      textShadow: "3px 3px 0 #fff, 6px 6px 0 #ffeb3b", // Shadow with a playful yellow
+                      fontFamily: "'Comic Sans MS', cursive, sans-serif", // Fun, child-friendly font
+                      textAlign: "center",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    Play with Paints
+                  </Typography>
+                </Grid>
               </Grid>
               <Grid container item gap={2} justifyContent="center">
                 <Grid item xs>

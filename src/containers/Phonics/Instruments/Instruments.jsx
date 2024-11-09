@@ -15,6 +15,7 @@ import BackArrow from "../../../assets/arrow.webp";
 
 const Instruments = () => {
   const [instruments, setInstruments] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
   const instrumentsQuery = useApiData("/instrument/media");
   const navigate = useNavigate();
 
@@ -52,22 +53,24 @@ const Instruments = () => {
           </IconButton>
         </Grid>
 
-        <Grid item>
-          <Button
-            variant="contained"
-            style={{ borderRadius: "20px", marginRight: "8px" }}
-            onClick={() => navigate("/phonics/instrument/create")}
-          >
-            Add Instrument
-          </Button>
-        </Grid>
+        {user.role === "admin" && (
+          <Grid item>
+            <Button
+              variant="contained"
+              style={{ borderRadius: "20px", marginRight: "8px" }}
+              onClick={() => navigate("/phonics/instrument/create")}
+            >
+              Add Instrument
+            </Button>
+          </Grid>
+        )}
       </Grid>
 
       <Grid
         container
         spacing={3} // Adjusts the gap between items
         sx={{
-          maxWidth: "95%", 
+          maxWidth: "95%",
           margin: "0 auto", // Centers the grid within the container
         }}
       >

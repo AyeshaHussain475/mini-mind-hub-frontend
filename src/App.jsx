@@ -27,8 +27,17 @@ import Games from "./containers/Games/Games";
 import MemoryGame from "./containers/Games/Memory Game";
 import Poems from "./containers/Phonics/Poems";
 import Home from "./containers/Home/Home";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+import EditAnimal from "./containers/Phonics/Animal/EditAnimal/EditAnimal";
+import Dashboard from "./containers/Dashboard/Dashboard";
 function App() {
+  useEffect(() => {
+    AOS.init({
+      duration: 500, // Animation duration
+    });
+  }, []);
   return (
     <Router>
       <Routes>
@@ -52,6 +61,11 @@ function App() {
             />
             <Route
               exact
+              path="/phonics/animal/:id/edit"
+              element={<EditAnimal />}
+            />
+            <Route
+              exact
               path="/phonics/instrument/create"
               element={<AddInstrument />}
             />
@@ -71,6 +85,7 @@ function App() {
             <Route exact path="/games" element={<Games />} />
             <Route exact path="/memoryGame" element={<MemoryGame />} />
             <Route exact path="/phonics/poems" element={<Poems />} />
+            <Route exact path="/dashboard" element={<Dashboard />} />
             {/* /memoryGame */}
           </Route>
         </Route>

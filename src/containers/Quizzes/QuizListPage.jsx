@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "../../axios";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import QuizPic from "../../assets/takequiz.jpg";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
+import BackArrow from "../../assets/arrow.webp";
 
 const QuizListPage = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState([]);
 
@@ -34,18 +36,42 @@ const QuizListPage = () => {
         backgroundSize: "cover",
       }}
     >
-      <Typography
-        variant="h2"
-        align="center"
-        sx={{
-          fontFamily: "'Comic Sans MS', cursive",
-          color: "#ff4081",
-          fontWeight: "bold",
-          paddingBottom: 3,
-        }}
-      >
-        Fun Quiz Time
-      </Typography>
+      <Grid container>
+        <Grid item>
+          <IconButton
+            sx={{
+              "&:hover": {
+                backgroundColor: "#CBC3E3",
+              },
+            }}
+            onClick={() => navigate("/")}
+          >
+            <img src={BackArrow} style={{ width: "80px", height: "80px" }} />
+          </IconButton>
+        </Grid>
+        <Grid item xs={11} justifyContent="center">
+          <Typography
+            variant="h2"
+            align="center"
+            sx={{
+              fontFamily: "'Comic Sans MS', cursive",
+              color: "#ff4081",
+              fontWeight: "bold",
+              paddingBottom: 3,
+            }}
+          >
+            Fun Quiz Time
+          </Typography>
+        </Grid>
+        {user.role === "admin" && (
+          <Grid item xs={12}>
+            <Box display="flex" justifyContent="flex-end">
+              <Button variant="contained">Add Quiz</Button>
+            </Box>
+          </Grid>
+        )}
+      </Grid>
+
       <Grid container spacing={4}>
         {quizzes.map((quiz) => (
           <Grid item xs={12} sm={6} md={4} key={quiz._id}>
@@ -72,10 +98,16 @@ const QuizListPage = () => {
                   sx={{ fontWeight: "bold", color: "#ff4081", paddingTop: 2 }}
                 >
                   {quiz.title}
-                  <EditIcon
-                    sx={{ cursor: "pointer", color: "#ff4081", marginLeft: 1 }}
-                    onClick={() => navigate(`/quizzes/${quiz._id}/edit`)}
-                  />
+                  {user.role === "admin" && (
+                    <EditIcon
+                      sx={{
+                        cursor: "pointer",
+                        color: "#ff4081",
+                        marginLeft: 1,
+                      }}
+                      onClick={() => navigate(`/quizzes/${quiz._id}/edit`)}
+                    />
+                  )}
                 </Typography>
                 <Typography
                   variant="body2"

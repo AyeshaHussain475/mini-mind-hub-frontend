@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -20,6 +21,7 @@ import {
 } from "@mui/icons-material";
 import axios from "../../../axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const Animal = ({
   title,
@@ -29,8 +31,10 @@ export const Animal = ({
   id,
   refetch,
 }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+  const navigate = useNavigate();
 
   const handlePlayPause = () => {
     if (isPlaying) {
@@ -80,13 +84,17 @@ export const Animal = ({
 
   const words = description.split(" ");
   return (
-    <Card sx={{ maxWidth: 400 }} className="card">
+    <Card sx={{ maxWidth: 500 }}>
       <CardActionArea>
         <CardMedia
           component="img"
-          height="250"
+          height="500"
           image={imageUrl}
           alt="green iguana"
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
         />
         <CardContent>
           <Typography
@@ -107,11 +115,21 @@ export const Animal = ({
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary" onClick={() => setOpen(true)}>
-          Delete
-        </Button>
-      </CardActions>
+      {user.role === "admin" && (
+        <CardActions style={{ justifyContent: "space-between" }}>
+          <Button size="small" color="primary" onClick={() => setOpen(true)}>
+            Delete
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => navigate(`/phonics/animal/${id}/edit`)}
+          >
+            Edit
+          </Button>
+        </CardActions>
+      )}
+
       <Dialog
         open={open}
         onClose={handleClose}
