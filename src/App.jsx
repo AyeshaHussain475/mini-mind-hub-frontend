@@ -32,6 +32,8 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import EditAnimal from "./containers/Phonics/Animal/EditAnimal/EditAnimal";
 import Dashboard from "./containers/Dashboard/Dashboard";
+import Deaf from "../Deaf";
+import Deaf2 from "../Deaf2";
 function App() {
   useEffect(() => {
     AOS.init({
@@ -86,6 +88,8 @@ function App() {
             <Route exact path="/memoryGame" element={<MemoryGame />} />
             <Route exact path="/phonics/poems" element={<Poems />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route exact path="/deaf" element={<Deaf />} />
+            <Route exact path="/deaf2" element={<Deaf2 />} />
             {/* /memoryGame */}
           </Route>
         </Route>
