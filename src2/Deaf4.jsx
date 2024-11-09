@@ -41,7 +41,7 @@ const Deaf4 = () => {
   const styles = {
     container: {
       textAlign: 'center',
-      backgroundImage: `url(${process.env.PUBLIC_URL}/hy3.png)`, // Set background image
+      backgroundImage: `url(/hy3.png)`, // Set background image directly
       backgroundSize: 'cover', // Cover the whole container
       backgroundPosition: 'center', // Center the image
       minHeight: '100vh', // Minimum height to cover the viewport
@@ -74,8 +74,8 @@ const Deaf4 = () => {
         {wallpapers.map((wallpaper, index) => (
           <img
             key={index}
-            src={process.env.PUBLIC_URL + wallpaper}
-            alt={`Wallpaper ${index + 1}`} // Fixed interpolation
+            src={wallpaper}
+            alt={`Wallpaper ${index + 1}`}
             style={styles.wallpaperImage}
           />
         ))}
@@ -87,8 +87,8 @@ const Deaf4 = () => {
           {images.slice(rowIndex * 5, rowIndex * 5 + 5).map((image, index) => (
             <img
               key={index}
-              src={process.env.PUBLIC_URL + image}
-              alt={`Image ${rowIndex * 5 + index + 1}`} // Fixed interpolation
+              src={image}
+              alt={`Image ${rowIndex * 5 + index + 1}`}
               style={styles.image}
             />
           ))}
@@ -98,4 +98,4 @@ const Deaf4 = () => {
   );
 };
 
-export default Deaf4; // Ensure this is included
+export default Deaf4;

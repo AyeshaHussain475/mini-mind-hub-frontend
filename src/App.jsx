@@ -34,8 +34,13 @@ import EditAnimal from "./containers/Phonics/Animal/EditAnimal/EditAnimal";
 import Dashboard from "./containers/Dashboard/Dashboard";
 import Deaf from "../Deaf";
 import Deaf2 from "../Deaf2";
+import StoryDetails from "../src2/StoryDetails";
+import StoryDetails2 from "../src2/StoryDetails2";
+import Story from "../src2/Story1"; 
+import Deaf3 from "../src2/Deaf3";
 import Deaf4 from "../src2/Deaf4";
 import Islamic from "../src2/islamic";
+
 function App() {
   useEffect(() => {
     AOS.init({
@@ -51,7 +56,14 @@ function App() {
         <Route exact path="/deaf" element={<Deaf />} />
         <Route exact path="/deaf2" element={<Deaf2 />} />
         <Route path="/islamic" element={<Islamic />} />
-        <Route path="/Deaf4" element={<Deaf4 />} />
+        <Route path="/story-details" element={<StoryDetails />} />
+        <Route path="/deaf3" element={<Deaf3 />} />
+        <Route path="/deaf4" element={<Deaf4 />} />
+        <Route path="/story-details" element={<StoryDetails />} />
+        <Route path="/story-details2" element={<StoryDetails2 />} />
+        <Route path="/story" element={<Story />} />
+
+        
         <Route element={<RequireAuth />}>
           <Route element={<Layout />}>ss
             <Route exact path="/" element={<Home />} />
