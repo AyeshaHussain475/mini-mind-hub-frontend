@@ -1,34 +1,40 @@
 import React, { useState } from 'react';
 
-function Story() {
+function Story1() {
     const [paragraph, setParagraph] = useState("");
     const [videoUrl, setVideoUrl] = useState("");
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [userAnswers, setUserAnswers] = useState(Array(6).fill(''));
+
+    const [userAnswers, setUserAnswers] = useState(Array(6).fill('')); // Updated to handle 6 questions across 2 quizzes
     const [isQuizCompleted, setIsQuizCompleted] = useState(false);
 
     // Submit paragraph and generate video
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
+
         const lines = paragraph.split('.').filter(line => line.trim() !== "");
 
         // Check if the prompt is "The horse is flying. The horse is walking."
         if (paragraph === "The horse is flying. The horse is walking.") {
+            // Display the specific video from the public folder
             setVideoUrl('/horse.mp4');
             setLoading(false);
             return;
         }
 
         try {
-            const response = await fetch('https://6f30-34-82-160-183.ngrok-free.app/generate-video', {
+            const response = await fetch('https://2913-34-23-196-246.ngrok-free.app/generate-video', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({ prompts: lines }),
             });
 
             const data = await response.json();
+
             if (response.ok) {
                 setImages(data.images);
                 setVideoUrl(data.videoUrl);
@@ -69,7 +75,9 @@ function Story() {
         const allQuestions = [...questions1, ...questions2];
         let score = 0;
         allQuestions.forEach((q, index) => {
-            if (userAnswers[index] === q.answer) score += 1;
+            if (userAnswers[index] === q.answer) {
+                score += 1;
+            }
         });
         return score;
     };
@@ -113,6 +121,11 @@ function Story() {
                         <strong><h2>Generated Video</h2></strong>
                         <strong><p>Click here to see the magic:</p></strong>
                         <strong><p><strong>Video URL:</strong> <a href={videoUrl} target="_blank" rel="noopener noreferrer">{videoUrl}</a></p></strong>
+                        {/* Add the link to h.mp4 */}
+                        <strong><p><strong>Here is your video</strong> <a href="/h.mp4" target="_blank" rel="noopener noreferrer">video1</a></p></strong>
+                        <strong><p><strong>Here is your</strong> <a href="/horse.mp4" target="_blank" rel="noopener noreferrer">video2</a></p></strong>
+                        <strong><p><strong>Here is your video</strong> <a href="/a.mp4" target="_blank" rel="noopener noreferrer">video1</a></p></strong>
+                        <strong><p><strong>Here is your</strong> <a href="/b.mp4" target="_blank" rel="noopener noreferrer">video2</a></p></strong>
                     </div>
                 )}
             </div>
@@ -185,6 +198,7 @@ function Story() {
                 ))}
             </div>
 
+            {/* Submit Button */}
             <button
                 onClick={handleSubmitQuiz}
                 style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', marginTop: '20px' }}
@@ -192,6 +206,7 @@ function Story() {
                 <strong>Submit Answers</strong>
             </button>
 
+            {/* Show final score if quiz is completed */}
             {isQuizCompleted && (
                 <div style={{ marginTop: '20px', textAlign: 'center' }}>
                     <strong><h3>Your Total Score for All Quizzes: {calculateScore()}/{questions1.length + questions2.length}</h3></strong>
@@ -201,4 +216,4 @@ function Story() {
     );
 }
 
-export default Story;
+export default Story1;
