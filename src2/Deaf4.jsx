@@ -36,19 +36,11 @@ const Deaf4 = () => {
 
   const styles = {
     container: {
-<<<<<<< HEAD
-      textAlign: 'center',
-      backgroundImage: `url(/hy3.png)`, // Set background image directly
-      backgroundSize: 'cover', // Cover the whole container
-      backgroundPosition: 'center', // Center the image
-      minHeight: '100vh', // Minimum height to cover the viewport
-=======
       textAlign: "center",
-      backgroundImage: `url(/hy3.png)`, // Direct path for background image
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      minHeight: "100vh",
->>>>>>> eb4dd2a92cb6727d6ca941fdfe302ded21b7a51f
+      backgroundImage: `url(/hy3.png)`, // Set background image directly
+      backgroundSize: "cover", // Cover the whole container
+      backgroundPosition: "center", // Center the image
+      minHeight: "100vh", // Minimum height to cover the viewport
     },
     wallpaperRow: {
       display: "flex",
@@ -77,13 +69,8 @@ const Deaf4 = () => {
       <div style={styles.wallpaperRow}>
         {wallpapers.map((wallpaper, index) => (
           <img
-<<<<<<< HEAD
             key={index}
             src={wallpaper}
-=======
-            key={`wallpaper-${index}`}
-            src={wallpaper} // Direct path for wallpaper images
->>>>>>> eb4dd2a92cb6727d6ca941fdfe302ded21b7a51f
             alt={`Wallpaper ${index + 1}`}
             style={styles.wallpaperImage}
           />
@@ -91,29 +78,15 @@ const Deaf4 = () => {
       </div>
 
       {/* Images rows */}
-<<<<<<< HEAD
-      {Array.from({ length: Math.ceil(images.length / 5) }).map((_, rowIndex) => (
-        <div key={rowIndex} style={styles.imagesRow}>
-          {images.slice(rowIndex * 5, rowIndex * 5 + 5).map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`Image ${rowIndex * 5 + index + 1}`}
-              style={styles.image}
-            />
-          ))}
-        </div>
-      ))}
-=======
       {Array.from({ length: Math.ceil(images.length / 5) }).map(
         (_, rowIndex) => (
-          <div key={`row-${rowIndex}`} style={styles.imagesRow}>
+          <div key={rowIndex} style={styles.imagesRow}>
             {images
               .slice(rowIndex * 5, rowIndex * 5 + 5)
               .map((image, index) => (
                 <img
-                  key={`image-${rowIndex * 5 + index}`}
-                  src={image} // Direct path for abc images
+                  key={index}
+                  src={image}
                   alt={`Image ${rowIndex * 5 + index + 1}`}
                   style={styles.image}
                 />
@@ -121,7 +94,6 @@ const Deaf4 = () => {
           </div>
         )
       )}
->>>>>>> eb4dd2a92cb6727d6ca941fdfe302ded21b7a51f
     </div>
   );
 };

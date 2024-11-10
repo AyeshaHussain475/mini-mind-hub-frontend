@@ -32,11 +32,11 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import EditAnimal from "./containers/Phonics/Animal/EditAnimal/EditAnimal";
 import Dashboard from "./containers/Dashboard/Dashboard";
-import Deaf from "../Deaf";
-import Deaf2 from "../Deaf2";
+import Deaf from "../src2/Deaf";
+import Deaf2 from "../src2/Deaf2";
 import StoryDetails from "../src2/StoryDetails";
 import StoryDetails2 from "../src2/StoryDetails2";
-import Story from "../src2/Story1"; 
+import Story from "../src2/Story1";
 import Deaf3 from "../src2/Deaf3";
 import Deaf4 from "../src2/Deaf4";
 import Islamic from "../src2/islamic";
@@ -53,19 +53,10 @@ function App() {
         <Route exact path="/sign-up" element={<SignUp />} />
         <Route exact path="/login" element={<SignIn />} />
         <Route exact path="/forgot-password" element={<ForgotPassword />} />
-        <Route exact path="/deaf" element={<Deaf />} />
-        <Route exact path="/deaf2" element={<Deaf2 />} />
-        <Route path="/islamic" element={<Islamic />} />
-        <Route path="/story-details" element={<StoryDetails />} />
-        <Route path="/deaf3" element={<Deaf3 />} />
-        <Route path="/deaf4" element={<Deaf4 />} />
-        <Route path="/story-details" element={<StoryDetails />} />
-        <Route path="/story-details2" element={<StoryDetails2 />} />
-        <Route path="/story" element={<Story />} />
 
-        
         <Route element={<RequireAuth />}>
-          <Route element={<Layout />}>ss
+          <Route element={<Layout />}>
+            ss
             <Route exact path="/" element={<Home />} />
             <Route exact path="/profile" element={<Profile />} />
             <Route path="/" element={<Navigate to="/phonics" replace />} />
@@ -106,7 +97,15 @@ function App() {
             <Route exact path="/memoryGame" element={<MemoryGame />} />
             <Route exact path="/phonics/poems" element={<Poems />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
-           
+            <Route exact path="/deaf" element={<Deaf />} />
+            <Route exact path="/deaf2" element={<Deaf2 />} />
+            <Route path="/islamic" element={<Islamic />} />
+            <Route path="/story-details" element={<StoryDetails />} />
+            <Route path="/deaf3" element={<Deaf3 />} />
+            <Route path="/deaf4" element={<Deaf4 />} />
+            <Route path="/story-details" element={<StoryDetails />} />
+            <Route path="/story-details2" element={<StoryDetails2 />} />
+            <Route path="/story" element={<Story />} />
             {/* /memoryGame */}
           </Route>
         </Route>
