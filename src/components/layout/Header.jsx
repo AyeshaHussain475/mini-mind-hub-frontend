@@ -20,16 +20,15 @@ const pages = [
   { label: "Quiz", link: "/quizzes" },
   { label: "Canvas", link: "/canvas" },
   { label: "Games", link: "/games" },
+  { label: "ABC signs", link: "/deaf4" },
+  { label: "Signs quiz", link: "/deaf3" },
+  { label: "Learn Signs", link: "/story-details" },
+  { label: "Deaf", link: "/story-details" },
 ];
 
+const settings = ["Profile", "Account", "Logout"];
 const Header = () => {
   const navigate = useNavigate();
-  const [settings, setSettings] = useState([
-    "Profile",
-    "Account",
-    "Dashboard",
-    "Logout",
-  ]);
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -38,9 +37,11 @@ const Header = () => {
 
   if (!user) return null;
 
-  if (user.role === "admin") {
-    settings.push("Dashboard");
-  }
+  useEffect(() => {
+    if (user.role === "admin" && !settings.includes("Dashboard")) {
+      settings.push("Dashboard");
+    }
+  }, [user.role]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
