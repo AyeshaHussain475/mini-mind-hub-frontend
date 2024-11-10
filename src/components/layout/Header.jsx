@@ -14,9 +14,9 @@ import logo from "../../assets/logo.jpeg";
 import { Grid } from "@mui/material";
 
 const pages = [
-  { label: "Quran", link: "" },
+  { label: "Quran", link: "/islamic" },
   { label: "Phonics", link: "/phonics" },
-  { label: "StoryImages", link: "" },
+  { label: "StoryImages", link: "/story-details" },
   { label: "Quiz", link: "/quizzes" },
   { label: "Canvas", link: "/canvas" },
   { label: "Games", link: "/games" },
