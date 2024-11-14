@@ -4,7 +4,9 @@ import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import QuizPic from "../../assets/takequiz.jpg";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 import BackArrow from "../../assets/arrow.webp";
+import { toast } from "react-toastify";
 
 const QuizListPage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -13,9 +15,10 @@ const QuizListPage = () => {
 
   const getQuizzes = async () => {
     const result = await axios.get("/quiz");
+    console.log(result.data.quizzes);
     setQuizzes(result.data.quizzes);
   };
-  console.log(quizzes);
+
   useEffect(() => {
     getQuizzes();
   }, []);
@@ -24,6 +27,20 @@ const QuizListPage = () => {
     if (quiz.attemptsRemaining === 0) return;
 
     navigate(`/quizzes/${quiz._id}/attempt`);
+  };
+
+  const deleteQuiz = async (title) => {
+    try {
+      const result = await axios.delete("/quiz", { data: { title } });
+      if (result.status === 200) {
+        toast.success("Quiz deleted successfully!");
+        getQuizzes();
+      } else {
+        toast.error("Something went wrong!");
+      }
+    } catch (error) {
+      toast.error("An error occurred while deleting the quiz.");
+    }
   };
 
   return (
@@ -104,14 +121,24 @@ const QuizListPage = () => {
                 >
                   {quiz.title}
                   {user.role === "admin" && (
-                    <EditIcon
-                      sx={{
-                        cursor: "pointer",
-                        color: "#ff4081",
-                        marginLeft: 1,
-                      }}
-                      onClick={() => navigate(`/quizzes/${quiz._id}/edit`)}
-                    />
+                    <>
+                      <EditIcon
+                        sx={{
+                          cursor: "pointer",
+                          color: "#ff4081",
+                          marginLeft: 1,
+                        }}
+                        onClick={() => navigate(`/quizzes/${quiz._id}/edit`)}
+                      />
+                      <DeleteIcon
+                        sx={{
+                          cursor: "pointer",
+                          color: "red",
+                          marginLeft: 1,
+                        }}
+                        onClick={() => deleteQuiz(quiz.title)}
+                      />
+                    </>
                   )}
                 </Typography>
                 <Typography
