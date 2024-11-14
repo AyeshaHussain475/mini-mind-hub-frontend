@@ -66,7 +66,12 @@ const QuizListPage = () => {
         {user.role === "admin" && (
           <Grid item xs={12}>
             <Box display="flex" justifyContent="flex-end">
-              <Button variant="contained">Add Quiz</Button>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/quiz/create")}
+              >
+                Add Quiz
+              </Button>
             </Box>
           </Grid>
         )}

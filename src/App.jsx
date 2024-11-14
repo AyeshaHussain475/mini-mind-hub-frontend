@@ -40,6 +40,7 @@ import Story from "../src2/Story1";
 import Deaf3 from "../src2/Deaf3";
 import Deaf4 from "../src2/Deaf4";
 import Islamic from "../src2/islamic";
+import AddQuiz from "./containers/Quizzes/AddQuiz/AddQuiz";
 
 function App() {
   useEffect(() => {
@@ -87,6 +88,7 @@ function App() {
               element={<AddAnimalPhonic />}
             />
             <Route exact path="/quizzes" element={<QuizListPage />} />
+            <Route exact path="/quiz/create" element={<AddQuiz />} />
             <Route
               exact
               path="/quizzes/:quizId/attempt"

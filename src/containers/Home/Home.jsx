@@ -153,7 +153,7 @@ const Home = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      Phonics
+                      Audio Learning
                     </Typography>
                   </motion.div>
                   <Typography
@@ -165,9 +165,9 @@ const Home = () => {
                     }}
                     data-aos="fade-up"
                   >
-                    Phonics is an amazing feature where kids can learn sounds in
-                    a fun and interactive way! They can explore animal sounds
-                    and learn the names of animals, discover different
+                    Audio Learning is an amazing feature where kids can learn
+                    sounds in a fun and interactive way! They can explore animal
+                    sounds and learn the names of animals, discover different
                     instrument sounds and their names, master the alphabet
                     through engaging activities, practice counting with sound,
                     and enjoy fun poems. It's a fantastic, creative journey to

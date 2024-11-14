@@ -41,7 +41,7 @@ const EditQuiz = () => {
 
       if (result.status === 200) {
         toast.success("Quiz updated successfully!");
-        navigate("/quiz-list");
+        navigate("/quizzes");
       } else {
         toast.error("Failed to update quiz!");
       }
