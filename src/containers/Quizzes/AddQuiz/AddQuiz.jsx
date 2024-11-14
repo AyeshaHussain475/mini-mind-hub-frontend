@@ -7,8 +7,12 @@ import {
   Box,
   Paper,
 } from "@mui/material";
+import axios from "../../../axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function AddQuiz() {
+  const navigate = useNavigate();
   const [quizData, setQuizData] = useState({
     title: "",
     description: "",
@@ -21,9 +25,25 @@ function AddQuiz() {
     setQuizData({ ...quizData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle submit logic, such as saving the quiz data
+    try {
+      const result = await axios.post("/quiz", {
+        title: quizData.title,
+        description: quizData.description,
+        duration: quizData.duration,
+        attempts: quizData.attempts,
+      });
+
+      if (result.status === 200) {
+        toast.success("Quiz is created successfully!");
+        setTimeout(() => {
+          navigate("/quizzes");
+        }, [1000]);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
     console.log(quizData);
   };
 
@@ -79,6 +99,7 @@ function AddQuiz() {
             color="primary"
             fullWidth
             sx={{ marginTop: 2 }}
+            onSubmit={handleSubmit}
           >
             Create Quiz
           </Button>
