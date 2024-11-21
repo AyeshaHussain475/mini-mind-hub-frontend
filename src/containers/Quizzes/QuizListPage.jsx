@@ -26,6 +26,7 @@ const QuizListPage = () => {
   const handleQuiz = (quiz) => {
     if (quiz.attemptsRemaining === 0) return;
 
+    // quiz.attemptsRemaining = quiz.attemptsRemaining - 1;
     navigate(`/quizzes/${quiz._id}/attempt`);
   };
 

@@ -15,15 +15,15 @@ import { Grid } from "@mui/material";
 
 const pages = [
   { label: "Quran", link: "/islamic" },
-  { label: "Phonics", link: "/phonics" },
-  { label: "StoryImages", link: "/story-details" },
+  { label: "Sounds", link: "/phonics" },
   { label: "Quiz", link: "/quizzes" },
   { label: "Canvas", link: "/canvas" },
   { label: "Games", link: "/games" },
-  { label: "ABC signs", link: "/deaf4" },
-  { label: "Signs quiz", link: "/deaf3" },
-  { label: "Learn Signs", link: "/story-details" },
-  { label: "Deaf", link: "/story-details" },
+  { label: "StoryImages", link: "/story" },
+  { label: "ABC", link: "/deaf4" },
+  { label: "Signs", link: "/deaf3" },
+  { label: "Learn", link: "/deaf2" },
+  { label: "Deaf", link: "/deaf" },
 ];
 
 const settings = ["Profile", "Account", "Logout"];

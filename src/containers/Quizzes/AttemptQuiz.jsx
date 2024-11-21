@@ -7,51 +7,44 @@ import {
   Radio,
   FormControl,
   RadioGroup,
-  IconButton,
   Button,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../axios";
 import { EmojiEvents } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const AttemptQuiz = () => {
+  const navigation = useNavigate();
   const { quizId } = useParams();
-  const [quiz, setQuiz] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [timeUp, setTimeUp] = useState(false);
 
-  const getQuizDetails = async (quizId) => {
-    const result = await axios.get(`/quiz/${quizId}`);
-    setQuiz(result.data.quiz);
-    const durationStr = quiz.duration;
-    const durationMinutes = parseInt(durationStr, 10);
-    setTimeLeft(durationMinutes * 60);
-    console.log(result.data);
-  };
+  const [quiz, setQuiz] = useState(null);
+  const [quizAttempt, setQuizAttempt] = useState(null);
 
   useEffect(() => {
     getQuizDetails(quizId);
   }, [quizId]);
 
-  // useEffect(() => {
-  //   let timer;
-  //   if (timeLeft > 0) {
-  //     timer = setInterval(() => {
-  //       setTimeLeft((prev) => prev - 1);
-  //     }, 1000);
-  //   } else {
-  //     setTimeUp(true);
-  //   }
-  //   return () => clearInterval(timer);
-  // }, [timeLeft]);
+  useEffect(() => {
+    if (!quizId && !quizAttempt) return;
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
+    const createQuizAttempt = async () => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const result = await axios.post(`/quiz/${quizId}/attempt`, {
+        userId: user._id,
+        createAttempt: true,
+      });
+      return result;
+    };
+
+    createQuizAttempt().then((r) => setQuizAttempt(r.data?.attempt));
+  }, []);
+
+  const getQuizDetails = async (quizId) => {
+    const result = await axios.get(`/quiz/${quizId}`);
+    setQuiz(result.data.quiz);
   };
 
-  console.log({ quiz });
   const handleOptionChange = (questionId, value) => {
     const updatedQuestions = quiz.questions.map((q) => {
       if (q._id === questionId) {
@@ -70,6 +63,12 @@ const AttemptQuiz = () => {
   };
 
   const handleSave = async () => {
+    const attemptedQuestions = quiz.questions.filter((q) => q.userAttempt);
+    if (attemptedQuestions.length < quiz.questions.length) {
+      toast.error("Please attempt all questions before submitting..");
+      return;
+    }
+
     const user = JSON.parse(localStorage.getItem("user"));
     const answers = quiz.questions.map((q) => ({
       questionId: q._id,
@@ -79,8 +78,15 @@ const AttemptQuiz = () => {
     const result = await axios.post(`/quiz/${quizId}/attempt`, {
       userId: user._id,
       answers,
+      attemptId: quizAttempt._id,
     });
-    console.log(result);
+
+    if (result.data?.attempt?._id) {
+      toast.success("Quiz submitted successfully");
+      navigation(-1);
+    } else {
+      toast.success("Failed to attempt quiz. Try again!");
+    }
   };
 
   return (
@@ -102,19 +108,7 @@ const AttemptQuiz = () => {
             fontWeight: "bold",
           }}
         >
-          Duration: {quiz?.duration}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            marginBottom: 2,
-            textAlign: "center",
-            color: "red",
-            fontWeight: "bold",
-          }}
-        >
-          hehe
-          {/* Time Left: {formatTime(timeLeft)} */}
+          Duration: {quiz?.duration} minutes
         </Typography>
       </div>
 
@@ -182,7 +176,11 @@ const AttemptQuiz = () => {
           </FormControl>
         </Paper>
       ))}
-      <Button onClick={handleSave}>Submit</Button>
+      <Box display="flex" justifyContent="flex-end">
+        <Button size="large" variant="contained" onClick={handleSave}>
+          Submit
+        </Button>
+      </Box>
     </Box>
   );
 };

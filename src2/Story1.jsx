@@ -26,7 +26,7 @@ function Story1() {
 
     try {
       const response = await fetch(
-        "https://588a-34-16-223-8.ngrok-free.app/generate-video",
+        "https://0eee-34-16-179-186.ngrok-free.app/generate-video",
         {
           method: "POST",
           headers: {
