@@ -47,7 +47,7 @@ const Dashboard = () => {
 
   const deleteUser = async (id) => {
     try {
-      const result = await axios.delete(`/user/${id}`);
+      const result = await axios.delete(`/users/${id}`);
       if (result.status === 200) {
         toast.success("User deleted successfully!");
         getUsers();
