@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.jpeg";
 import { Grid } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { ManageAccountsOutlined, Input } from "@mui/icons-material";
 
 const pages = [
   { label: "Quran", link: "/islamic" },
@@ -26,7 +28,7 @@ const pages = [
   { label: "Deaf", link: "/deaf" },
 ];
 
-const settings = ["Profile", "Account", "Logout"];
+const settings = ["My Account", "Logout"];
 const Header = () => {
   const navigate = useNavigate();
 
@@ -80,8 +82,8 @@ const Header = () => {
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <Grid container>
-          <Grid item>
+        <Grid item container xs={3}>
+          <Grid item xs={12}>
             <Typography
               variant="h6"
               noWrap
@@ -167,7 +169,13 @@ const Header = () => {
         >
           MiniMind Hub
         </Typography>
-        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: { xs: "none", md: "flex" },
+            marginRight: 16,
+          }}
+        >
           {pages.map((page) => (
             <Button
               key={page}
@@ -179,11 +187,11 @@ const Header = () => {
             </Button>
           ))}
         </Box>
-        <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open settings">
+        <Box sx={{ flexGrow: 0, minWidth: "max-content" }}>
+          <Tooltip title={`${user?.firstName} ${user.lastName}`}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Typography sx={{ color: "white" }}>
-                {user.firstName} {user.lastName}
+                <AccountCircleIcon sx={{ fontSize: 28 }} />
               </Typography>
             </IconButton>
           </Tooltip>
@@ -203,16 +211,24 @@ const Header = () => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography
-                  textAlign="center"
-                  onClick={() => handleAction(setting)}
-                >
-                  {setting}
-                </Typography>
-              </MenuItem>
-            ))}
+            {settings.map((setting) => {
+              return (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  {setting === "My Account" ? (
+                    <ManageAccountsOutlined sx={{ fontSize: 18 }} />
+                  ) : (
+                    <Input sx={{ fontSize: 18 }} />
+                  )}
+                  <Typography
+                    textAlign="center"
+                    onClick={() => handleAction(setting)}
+                    sx={{ marginLeft: "8px" }}
+                  >
+                    {setting}
+                  </Typography>
+                </MenuItem>
+              );
+            })}
           </Menu>
         </Box>
       </Toolbar>
