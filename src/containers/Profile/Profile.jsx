@@ -1,5 +1,18 @@
-import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import { AccountCircle as Account } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import {
+  AccountCircle as Account,
+  Visibility as OpenEye,
+  VisibilityOff as ClosedEye,
+} from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "../../axios";
 import { toast } from "react-toastify";
@@ -12,6 +25,7 @@ const Profile = () => {
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState(user.password);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSave = async () => {
     try {
@@ -113,10 +127,23 @@ const Profile = () => {
             <Grid item xs={12}>
               <TextField
                 label="Password"
+                type={showPassword ? "text" : "password"}
                 fullWidth
                 variant="outlined"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? <OpenEye /> : <ClosedEye />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               ></TextField>
             </Grid>
           </Grid>

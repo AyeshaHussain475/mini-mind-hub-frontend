@@ -15,12 +15,14 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "../../axios";
+import { Alert, AlertTitle } from "@mui/material";
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
   const navigate = useNavigate();
   const user = localStorage.getItem("user");
 
@@ -48,6 +50,19 @@ export default function SignUp() {
   }
 
   const handleSignUp = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
+    const validDomains = ["example.com", "myapp.com", "gmail.com"]; // Added gmail.com to valid domains
+    const emailDomain = email.split("@")[1];
+
+    if (!emailRegex.test(email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!validDomains.includes(emailDomain)) {
+      setEmailError(`Email domain must be one of: ${validDomains.join(", ")}`);
+      return;
+    }
     try {
       const result = await axios.post("signup", {
         firstName,
@@ -55,8 +70,9 @@ export default function SignUp() {
         email,
         password,
       });
-      toast.success("User is created successfully");
-
+      toast.success(
+        "User is created successfully. Please verify your email before logging in."
+      );
       setTimeout(() => {
         navigate("/login");
       }, 3000);
@@ -141,6 +157,12 @@ export default function SignUp() {
                     }}
                     onChange={(e) => setEmail(e.target.value)}
                   />
+                  {emailError && (
+                    <Alert severity="error" style={{ margin: "10px 0" }}>
+                      <AlertTitle>Error</AlertTitle>
+                      Email is incorrect! <strong>{emailError}</strong>
+                    </Alert>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

@@ -8,6 +8,7 @@ import AddAnimalPhonic from "./containers/Phonics/Animal/AddAnimal/AddAnimal";
 import SignUp from "./containers/Auth/Signup";
 import SignIn from "./containers/Auth/Signin";
 import ForgotPassword from "./containers/Auth/ForgotPassword";
+import VerifyAccount from "./containers/Auth/VerifyAccount";
 import Layout from "./components/layout/Layout";
 import { RequireAuth } from "./utils/RequireAuth";
 import QuizListPage from "./containers/Quizzes/QuizListPage";
@@ -32,8 +33,8 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import EditAnimal from "./containers/Phonics/Animal/EditAnimal/EditAnimal";
 import Dashboard from "./containers/Dashboard/Dashboard";
-import Deaf from "../src2/Deaf";
-import Deaf2 from "../src2/Deaf2";
+// import Deaf from "../src2/Deaf";
+// import Deaf2 from "../src2/Deaf2";
 import StoryDetails from "../src2/StoryDetails";
 import StoryDetails2 from "../src2/StoryDetails2";
 import Story from "../src2/Story1";
@@ -41,6 +42,8 @@ import Deaf3 from "../src2/Deaf3";
 import Deaf4 from "../src2/Deaf4";
 import Islamic from "../src2/islamic";
 import AddQuiz from "./containers/Quizzes/AddQuiz/AddQuiz";
+import Deaf from "./containers/Deaf/Deaf";
+import ResetPassword from "./containers/Auth/ResetPassword";
 
 function App() {
   useEffect(() => {
@@ -54,6 +57,12 @@ function App() {
         <Route exact path="/sign-up" element={<SignUp />} />
         <Route exact path="/login" element={<SignIn />} />
         <Route exact path="/forgot-password" element={<ForgotPassword />} />
+        <Route exact path="/verify-account" element={<VerifyAccount />} />
+        <Route
+          exact
+          path="/reset-password/:id/:token"
+          element={<ResetPassword />}
+        />
 
         <Route element={<RequireAuth />}>
           <Route element={<Layout />}>
@@ -98,9 +107,10 @@ function App() {
             <Route exact path="/games" element={<Games />} />
             <Route exact path="/memoryGame" element={<MemoryGame />} />
             <Route exact path="/phonics/poems" element={<Poems />} />
-            <Route exact path="/dashboard" element={<Dashboard />} />
             <Route exact path="/deaf" element={<Deaf />} />
-            <Route exact path="/deaf2" element={<Deaf2 />} />
+            <Route exact path="/dashboard" element={<Dashboard />} />
+            {/* <Route exact path="/deaf" element={<Deaf />} />
+            <Route exact path="/deaf2" element={<Deaf2 />} /> */}
             <Route path="/islamic" element={<Islamic />} />
             <Route path="/story-details" element={<StoryDetails />} />
             <Route path="/deaf3" element={<Deaf3 />} />

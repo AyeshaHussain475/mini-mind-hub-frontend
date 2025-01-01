@@ -12,7 +12,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Stack } from "@mui/material";
 import forgotIcon from "../../assets/forgotIcon.jpg";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "../../axios";
 import { toast } from "react-toastify";
 
@@ -36,32 +36,36 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
   const navigate = useNavigate();
-  const [email, setEmail] = React.useState("");
+  const { id, token } = useParams();
+  const [password, setPassword] = React.useState("");
+  const [isUpdating, setIsUpdating] = React.useState(false);
   const user = localStorage.getItem("user");
-  const [isSendingEmail, setSendingEmail] = React.useState(false);
 
   if (user) {
     return <Navigate to="/" />;
   }
 
-  const handleForgotPassword = async () => {
-    setSendingEmail(true);
-    const result = await axios.post("/reset-password", {
-      email,
+  const handleUpdatePassword = async () => {
+    setIsUpdating(true);
+    const result = await axios.post("/update-password", {
+      id,
+      token,
+      password,
     });
 
     if (result.status === 200) {
-      toast.success(
-        "Reset Password email has been sent successfully! Check Your Mail"
-      );
-      setEmail("");
+      toast.success("Your password has been updated. Log in to continue");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } else {
       toast.error("Something went wrong!");
     }
-    setSendingEmail(false);
+    setIsUpdating(false);
   };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container>
@@ -91,22 +95,20 @@ export default function ForgotPassword() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Forgot Password
+                Update Password
               </Typography>
-              <Box noValidate sx={{ mt: 1 }}>
+              <Box sx={{ mt: 1 }}>
                 <TextField
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  label="Password"
                   autoFocus
                   InputLabelProps={{
                     style: { color: "purple" },
                   }}
-                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isUpdating}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <Stack direction="row" spacing={2}>
                   <Button
@@ -119,23 +121,9 @@ export default function ForgotPassword() {
                       backgroundColor: "darkorchid",
                       color: "white",
                     }}
-                    onClick={handleForgotPassword}
-                    disabled={isSendingEmail}
+                    onClick={handleUpdatePassword}
                   >
-                    Ok
-                  </Button>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{
-                      mt: 3,
-                      mb: 2,
-                      backgroundColor: "darkorchid",
-                      color: "white",
-                    }}
-                  >
-                    Cancel
+                    Update Password
                   </Button>
                 </Stack>
               </Box>

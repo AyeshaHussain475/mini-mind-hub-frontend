@@ -54,7 +54,7 @@ export default function SignIn() {
       console.log(result.data.user, "login user");
 
       localStorage.setItem("token", result.data.token);
-      localStorage.setItem("user", JSON.stringify(result.data.user[0]));
+      localStorage.setItem("user", JSON.stringify(result.data.user));
       axios.defaults.headers.common["Authorization"] =
         "Bearer " + result.data.token;
 
@@ -66,7 +66,7 @@ export default function SignIn() {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong");
+      toast.error(error?.response?.data?.message || "Something went wrong");
     }
   };
 
