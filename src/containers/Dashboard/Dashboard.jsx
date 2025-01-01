@@ -57,6 +57,18 @@ const Dashboard = () => {
     }
   };
 
+  const verifyUser = async (id) => {
+    try {
+      const result = await axios.patch(`/users/${id}`);
+      if (result.status === 200) {
+        toast.success("User verified successfully!");
+        getUsers();
+      }
+    } catch (error) {
+      toast.error("Error deleting user");
+    }
+  };
+
   useEffect(() => {
     getUsers();
   }, []);
@@ -153,7 +165,7 @@ const Dashboard = () => {
                     <Typography variant="body1">
                       <strong>Role:</strong> {user.role}
                     </Typography>
-                    <div style={{ marginTop: "1rem" }}>
+                    <div style={{ marginTop: "1rem", display: "flex", gap: 2 }}>
                       {user.role === "admin" ? (
                         <Button
                           variant="contained"
@@ -166,10 +178,19 @@ const Dashboard = () => {
                       ) : (
                         <Button
                           variant="contained"
-                          color="secondary"
+                          color="error"
                           onClick={() => deleteUser(user._id)}
                         >
                           Delete
+                        </Button>
+                      )}
+                      {!user.isVerified && (
+                        <Button
+                          variant="contained"
+                          color="success"
+                          onClick={() => verifyUser(user._id)}
+                        >
+                          Verify
                         </Button>
                       )}
                     </div>
