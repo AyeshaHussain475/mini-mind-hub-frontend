@@ -19,15 +19,28 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState(user.password);
-  const [showPassword, setShowPassword] = useState(false);
+  const [user, setUser] = useState();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    setEmail(user.email);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setUser(user);
+  }, []);
 
   const handleSave = async () => {
+    if (!firstName || !lastName) {
+      toast.error("Please fill required fields");
+      return;
+    }
+
     try {
       const result = await axios.put("/edit", {
         firstName,
@@ -37,15 +50,21 @@ const Profile = () => {
       });
       if (result.status === 200) {
         toast.success("User is updated successfully!");
-      } else {
-        toast.error("Something went wrong!");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...user,
+            firstName,
+            lastName,
+          })
+        );
+        return;
       }
+      toast.error("Something went wrong!");
     } catch (error) {
       toast.error("Something went wrong!");
     }
   };
-
-  useEffect(() => {}, [user]);
 
   return (
     <>
@@ -66,7 +85,7 @@ const Profile = () => {
             color: "#333",
           }}
         >
-          {firstName}'s Profile
+          {user?.firstName}'s Profile
         </Typography>
         <Paper
           elevation={5}
@@ -103,6 +122,7 @@ const Profile = () => {
                 variant="outlined"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
+                required
               ></TextField>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -112,6 +132,7 @@ const Profile = () => {
                 variant="outlined"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                required
               ></TextField>
             </Grid>
 
@@ -122,28 +143,6 @@ const Profile = () => {
                 variant="outlined"
                 value={email}
                 disabled
-              ></TextField>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                fullWidth
-                variant="outlined"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
-                        {showPassword ? <OpenEye /> : <ClosedEye />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
               ></TextField>
             </Grid>
           </Grid>
