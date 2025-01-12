@@ -10,7 +10,6 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/logo.jpeg";
 import { Grid } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { ManageAccountsOutlined, Input } from "@mui/icons-material";
@@ -65,19 +64,13 @@ const Header = () => {
       localStorage.removeItem("user");
       navigate("/login");
     }
-    if (action === "Profile") {
+    if (action === "My Account") {
       navigate("/profile");
     }
     if (action === "Dashboard") {
       navigate("/dashboard");
     }
   };
-
-  // useEffect(() => {
-  //   if (user.role === "admin") {
-  //     setSettings((prev) => [...prev, "Dashboard"]);
-  //   }
-  // }, []);
 
   return (
     <AppBar position="sticky">

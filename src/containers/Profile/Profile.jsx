@@ -1,25 +1,11 @@
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  InputAdornment,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
-import {
-  AccountCircle as Account,
-  Visibility as OpenEye,
-  VisibilityOff as ClosedEye,
-} from "@mui/icons-material";
+import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { AccountCircle as Account } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "../../axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const [user, setUser] = useState();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -70,12 +56,14 @@ const Profile = () => {
     <>
       <Grid
         container
-        justifyContent="center"
         alignItems="center"
         gap={2}
         height="100vh"
         direction="column"
-        style={{ background: "linear-gradient(135deg, #c4aec4, #a8d8ea)" }}
+        style={{
+          background: "linear-gradient(135deg, #c4aec4, #a8d8ea)",
+          paddingTop: "5%",
+        }}
       >
         <Typography
           style={{
