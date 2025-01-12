@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../axios";
 import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
-import QuizPic from "../../assets/takequiz.jpg";
+import QuizPic from "../../assets/takequiz2.webp";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import { Delete as DeleteIcon } from "@mui/icons-material";
@@ -95,11 +95,15 @@ const QuizListPage = () => {
         )}
       </Grid>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={2}>
         {quizzes.map((quiz) => (
-          <Grid item xs={12} sm={6} md={4} key={quiz._id}>
+          <Grid item xs={6} sm={6} md={3} key={quiz._id}>
             <Box
               sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
                 backgroundColor: "#ffffff",
                 borderRadius: "10px",
                 boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
@@ -110,11 +114,11 @@ const QuizListPage = () => {
                 },
               }}
             >
-              <Box sx={{ padding: 2, textAlign: "center" }}>
+              <Box sx={{ padding: 1, textAlign: "center" }}>
                 <img
                   src={QuizPic}
                   alt="Quiz"
-                  style={{ width: "100%", borderRadius: "10px 10px 0 0" }}
+                  style={{ width: "100%", borderRadius: 8 }}
                 />
                 <Typography
                   variant="h5"
@@ -145,7 +149,7 @@ const QuizListPage = () => {
                 <Typography
                   variant="body2"
                   color="textSecondary"
-                  sx={{ padding: "10px 0" }}
+                  sx={{ padding: "8px 0" }}
                 >
                   {quiz.description}
                 </Typography>
