@@ -81,7 +81,6 @@ const Header = () => {
               variant="h6"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -91,6 +90,7 @@ const Header = () => {
                 color: "inherit",
                 textDecoration: "none",
               }}
+              onClick={() => navigate("/")}
             >
               MiniMind Hub
             </Typography>
