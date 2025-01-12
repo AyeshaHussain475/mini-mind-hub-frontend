@@ -174,7 +174,11 @@ const Header = () => {
               key={page}
               // onClick={handleCloseNavMenu}
               onClick={() => navigate(page.link)}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{
+                my: 2,
+                color: "white",
+              }}
+              centerRipple
             >
               {page.label}
             </Button>
