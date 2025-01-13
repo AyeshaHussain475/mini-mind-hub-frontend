@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const baseURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:7000/mini/";
+
 const instance = axios.create({
-  baseURL: "http://localhost:7000/mini/",
+  baseURL,
 });
 
 const token = localStorage.getItem("token");
