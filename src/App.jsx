@@ -38,6 +38,7 @@ import Dashboard from "./containers/Dashboard/Dashboard";
 import StoryDetails from "../src2/StoryDetails";
 import StoryDetails2 from "../src2/StoryDetails2";
 import Story from "../src2/Story1";
+import Deaf1 from "../src2/Deaf";
 import Deaf3 from "../src2/Deaf3";
 import Deaf4 from "../src2/Deaf4";
 import Islamic from "../src2/islamic";
@@ -113,6 +114,7 @@ function App() {
             <Route exact path="/deaf2" element={<Deaf2 />} /> */}
             <Route path="/islamic" element={<Islamic />} />
             <Route path="/story-details" element={<StoryDetails />} />
+            <Route path="/deaf1" element={<Deaf1 />} />
             <Route path="/deaf3" element={<Deaf3 />} />
             <Route path="/deaf4" element={<Deaf4 />} />
             <Route path="/story-details" element={<StoryDetails />} />
