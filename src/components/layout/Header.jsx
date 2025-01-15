@@ -12,7 +12,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { ManageAccountsOutlined, Input } from "@mui/icons-material";
+import {
+  ManageAccountsOutlined,
+  Input,
+  AccountBoxOutlined,
+} from "@mui/icons-material";
 
 const pages = [
   { label: "Sounds", link: "/phonics" },
@@ -28,7 +32,27 @@ const pages = [
   { label: "Take Sign Quiz", link: "/deaf3" },
 ];
 
-const settings = ["My Account", "Logout"];
+let settings = [
+  {
+    label: "My Account",
+    action: "My Account",
+    isVisible: true,
+    icon: <AccountBoxOutlined sx={{ fontSize: 18 }} />,
+  },
+  {
+    label: "User Management",
+    action: "Dashboard",
+    icon: <ManageAccountsOutlined sx={{ fontSize: 18 }} />,
+    isVisible: false,
+  },
+  {
+    label: "Logout",
+    action: "Logout",
+    isVisible: true,
+    icon: <Input sx={{ fontSize: 18 }} />,
+  },
+];
+
 const Header = () => {
   const navigate = useNavigate();
 
@@ -40,8 +64,8 @@ const Header = () => {
   if (!user) return null;
 
   useEffect(() => {
-    if (user.role === "admin" && !settings.includes("Dashboard")) {
-      settings.push("Dashboard");
+    if (user.role === "admin") {
+      settings = settings.map((s) => ({ ...s, isVisible: true }));
     }
   }, [user.role]);
 
@@ -210,19 +234,17 @@ const Header = () => {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => {
+              if (!setting.isVisible) return <></>;
+
               return (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  {setting === "My Account" ? (
-                    <ManageAccountsOutlined sx={{ fontSize: 18 }} />
-                  ) : (
-                    <Input sx={{ fontSize: 18 }} />
-                  )}
+                <MenuItem key={setting.label} onClick={handleCloseUserMenu}>
+                  {setting.icon}
                   <Typography
                     textAlign="center"
-                    onClick={() => handleAction(setting)}
+                    onClick={() => handleAction(setting.action)}
                     sx={{ marginLeft: "8px" }}
                   >
-                    {setting}
+                    {setting.label}
                   </Typography>
                 </MenuItem>
               );
