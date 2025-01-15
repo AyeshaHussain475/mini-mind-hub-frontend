@@ -175,6 +175,20 @@ const Deaf3 = () => {
       marginLeft: "auto",
       marginRight: "auto",
     },
+    scoreButton: {
+      marginTop: "20px",
+      padding: "10px 20px",
+      border: "none",
+      borderRadius: "5px",
+      backgroundColor: "#3498db",
+      color: "white",
+      cursor: "pointer",
+      fontSize: "18px",
+      transition: "background-color 0.3s",
+      display: "block",
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
     wallpaper: {
       display: "flex",
       justifyContent: "center",
@@ -184,6 +198,51 @@ const Deaf3 = () => {
     wallpaperImage: {
       width: "33.33%",
       height: "auto",
+    },
+    guessPrompt: {
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: "#f7f1e3",
+      border: "1px solid #dcdde1",
+      borderRadius: "12px",
+      padding: "20px",
+      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+      zIndex: 1000,
+      width: "300px",
+      textAlign: "center",
+    },
+    guessInput: {
+      width: "100%",
+      padding: "10px",
+      fontSize: "16px",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      marginTop: "10px",
+      outline: "none",
+    },
+    guessButton: {
+      marginTop: "20px",
+      padding: "10px 20px",
+      border: "none",
+      borderRadius: "5px",
+      backgroundColor: "#3498db",
+      color: "white",
+      cursor: "pointer",
+      fontSize: "18px",
+      transition: "background-color 0.3s",
+    },
+    cancelButton: {
+      marginTop: "10px",
+      padding: "10px 20px",
+      border: "none",
+      borderRadius: "5px",
+      backgroundColor: "#e74c3c",
+      color: "white",
+      cursor: "pointer",
+      fontSize: "18px",
+      transition: "background-color 0.3s",
     },
   };
 
@@ -232,6 +291,40 @@ const Deaf3 = () => {
             />
             <button onClick={() => setShowPopup(false)}>Close</button>
           </div>
+        </div>
+      )}
+
+      {showGuessPrompt && (
+        <div>
+          <div style={styles.overlay} onClick={handleCancel} />
+          <div style={styles.guessPrompt}>
+            <h3>What's your guess?</h3>
+            <input
+              type="text"
+              value={guessInput}
+              onChange={(e) => setGuessInput(e.target.value)}
+              style={styles.guessInput}
+              placeholder="Type your guess here..."
+            />
+            <button style={styles.guessButton} onClick={handleGuessSubmit}>
+              Submit Guess
+            </button>
+            <button style={styles.cancelButton} onClick={handleCancel}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      <button style={styles.scoreButton} onClick={showStatistics}>
+        Show Score
+      </button>
+
+      {showStats && (
+        <div style={styles.stats}>
+          <p>Number of Cards Flipped: {flippedCount}</p>
+          <p>Number of Correct Answers: {correctCount}</p>
+          <p>Number of Wrong Answers: {wrongCount}</p>
         </div>
       )}
 

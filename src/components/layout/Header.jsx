@@ -15,16 +15,17 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { ManageAccountsOutlined, Input } from "@mui/icons-material";
 
 const pages = [
-  { label: "Quran", link: "/islamic" },
   { label: "Sounds", link: "/phonics" },
   { label: "Quiz", link: "/quizzes" },
   { label: "Canvas", link: "/canvas" },
   { label: "Games", link: "/games" },
-  { label: "StoryImages", link: "/story" },
-  { label: "ABC", link: "/deaf4" },
-  { label: "Signs", link: "/deaf3" },
-  { label: "Learn", link: "/deaf2" },
-  { label: "Deaf", link: "/deaf" },
+  { label: "Quran", link: "/islamic" },
+  { label: "Text-to-Story", link: "/story" },
+  { label: "Story Adventures", link: "/story-Adventures" },
+  { label: "Deaf Learning Hub", link: "/deaf" },
+  { label: "Signs ABC", link: "/deaf4" },
+  { label: "Learn Sign", link: "/deaf2" },
+  { label: "Take Sign Quiz", link: "/deaf3" },
 ];
 
 const settings = ["My Account", "Logout"];

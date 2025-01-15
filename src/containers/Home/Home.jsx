@@ -399,6 +399,7 @@ const Home = () => {
               // spacing={3}
               alignItems="center"
               justifyContent="center"
+              onClick={() => navigate("/islamic")}
             >
               <Grid item xs={12} md={6}>
                 <motion.img
@@ -469,6 +470,7 @@ const Home = () => {
               // spacing={3}
               alignItems="center"
               justifyContent="center"
+              onClick={() => navigate("/deaf")}
             >
               <Grid item xs={12} md={6}>
                 <Paper
@@ -493,7 +495,7 @@ const Home = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      Deaf Children
+                      Deaf Learning Hub
                     </Typography>
                   </motion.div>
                   <Typography
@@ -538,6 +540,7 @@ const Home = () => {
               // spacing={3}
               alignItems="center"
               justifyContent="center"
+              onClick={() => navigate("/story")}
             >
               <Grid item xs={12} md={6}>
                 <motion.img
@@ -580,7 +583,7 @@ const Home = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      Story Generation
+                      Text-To-Story
                     </Typography>
                   </motion.div>
                   <Typography

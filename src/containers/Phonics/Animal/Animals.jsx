@@ -34,7 +34,6 @@ import BackArrow from "../../../assets/arrow.webp";
 
 const AnimalPhonics = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user, "user details");
 
   const navigate = useNavigate();
   const textFieldRef = useRef(null);

@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Deaf = () => {
+  const [showOptions, setShowOptions] = useState(false);
+
+  const handleButtonClick = () => {
+    setShowOptions((prev) => !prev);
+  };
+
   const styles = {
     body: {
       backgroundImage: "url('/bg10.jpg')", // Path to image in public folder
@@ -71,6 +77,27 @@ const Deaf = () => {
       justifyContent: "center",
       alignItems: "center",
     },
+    optionsButton: {
+      backgroundColor: "#8a2be2",
+      color: "white",
+      border: "none",
+      padding: "10px 20px",
+      fontSize: "1.2em",
+      cursor: "pointer",
+      borderRadius: "5px",
+      marginTop: "20px",
+    },
+    optionsList: {
+      marginTop: "20px",
+      textAlign: "center",
+    },
+    optionLink: {
+      display: "block",
+      color: "#8a2be2",
+      textDecoration: "none",
+      fontSize: "1.2em",
+      margin: "10px 0",
+    },
   };
 
   return (
@@ -92,6 +119,28 @@ const Deaf = () => {
           </p>
         </div>
       </div>
+
+      {/* Button to Toggle Options */}
+      <div style={{ textAlign: "center" }}>
+        <button style={styles.optionsButton} onClick={handleButtonClick}>
+          {showOptions ? "Hide Options" : "Explore More"}
+        </button>
+      </div>
+
+      {/* Options List */}
+      {showOptions && (
+        <div style={styles.optionsList}>
+          <a href="/deaf4" style={styles.optionLink}>
+            ABC playtime
+          </a>
+          <a href="/deaf2" style={styles.optionLink}>
+            Learn Signs
+          </a>
+          <a href="/deaf3" style={styles.optionLink}>
+            Test Your Signs
+          </a>
+        </div>
+      )}
 
       {/* Second Section */}
       <div style={styles.reverseContainer}>

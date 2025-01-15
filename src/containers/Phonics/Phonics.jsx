@@ -36,12 +36,12 @@ const cards = [
     route: "/phonics/counting",
     tooltip: "Learn numbers with phonics!",
   },
-  {
-    title: "Poems",
-    image: Peoms,
-    route: "/phonics/poems",
-    tooltip: "Enjoy phonics with poems!",
-  },
+  // {
+  //   title: "Poems",
+  //   image: Peoms,
+  //   route: "/phonics/poems",
+  //   tooltip: "Enjoy phonics with poems!",
+  // },
   {
     title: "Instruments",
     image: Instruments,

@@ -13,7 +13,7 @@ export const useApiData = (url, errorMessage = "Failed to fetch data") => {
       setIsLoading(true);
       const result = await axios.get(url);
 
-      if (result.statusText === "OK") {
+      if (result.status === 200) {
         setData(result.data);
       } else {
         toast.error(errorMessage);

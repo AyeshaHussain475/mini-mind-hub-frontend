@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
-function Story1() {
+function App() {
   const [paragraph, setParagraph] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const [userAnswers, setUserAnswers] = useState(Array(6).fill("")); // Updated to handle 6 questions across 2 quizzes
+  const [userAnswers, setUserAnswers] = useState(Array(6).fill(""));
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
+  const videoRefs = useRef([]);
 
   // Submit paragraph and generate video
   const handleSubmit = async (event) => {
@@ -16,17 +18,9 @@ function Story1() {
 
     const lines = paragraph.split(".").filter((line) => line.trim() !== "");
 
-    // Check if the prompt is "The horse is flying. The horse is walking."
-    if (paragraph === "The horse is flying. The horse is walking.") {
-      // Display the specific video from the public folder
-      setVideoUrl("/horse.mp4");
-      setLoading(false);
-      return;
-    }
-
     try {
       const response = await fetch(
-        "https://0eee-34-16-179-186.ngrok-free.app/generate-video",
+        "https://7ebe-34-125-112-5.ngrok-free.app/generate-video",
         {
           method: "POST",
           headers: {
@@ -39,8 +33,8 @@ function Story1() {
       const data = await response.json();
 
       if (response.ok) {
-        setImages(data.images);
-        setVideoUrl(data.videoUrl);
+        setImages(data.images || []);
+        setVideoUrl(data.videoUrl || "");
       } else {
         console.error("Error fetching data:", data);
       }
@@ -48,6 +42,39 @@ function Story1() {
       console.error("Error:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAnswerChange = (index, selectedOption) => {
+    const updatedAnswers = [...userAnswers];
+    updatedAnswers[index] = selectedOption;
+    setUserAnswers(updatedAnswers);
+  };
+
+  const handleSubmitQuiz = () => {
+    const score = calculateScore();
+    setFinalScore(score);
+    setIsQuizCompleted(true);
+    setShowModal(true);
+  };
+
+  const calculateScore = () => {
+    const allQuestions = [...questions1, ...questions2];
+    let score = 0;
+    allQuestions.forEach((q, index) => {
+      if (userAnswers[index] === q.answer) {
+        score += 1;
+      }
+    });
+    return score;
+  };
+
+  const handleVideoClick = (index) => {
+    const videoElement = videoRefs.current[index];
+    if (videoElement.paused) {
+      videoElement.play();
+    } else {
+      videoElement.pause();
     }
   };
 
@@ -88,27 +115,6 @@ function Story1() {
     },
   ];
 
-  const handleAnswerChange = (index, selectedOption) => {
-    const updatedAnswers = [...userAnswers];
-    updatedAnswers[index] = selectedOption;
-    setUserAnswers(updatedAnswers);
-  };
-
-  const handleSubmitQuiz = () => {
-    setIsQuizCompleted(true);
-  };
-
-  const calculateScore = () => {
-    const allQuestions = [...questions1, ...questions2];
-    let score = 0;
-    allQuestions.forEach((q, index) => {
-      if (userAnswers[index] === q.answer) {
-        score += 1;
-      }
-    });
-    return score;
-  };
-
   return (
     <div
       style={{
@@ -119,7 +125,35 @@ function Story1() {
         color: "black",
       }}
     >
-      {/* Video and Images Generation Form */}
+      {/* Image Banner */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: "20px",
+          flexWrap: "wrap",
+          gap: "10px",
+        }}
+      >
+        <img
+          src="/muniba1.png"
+          alt="First"
+          style={{ width: "30%", borderRadius: "10px" }}
+        />
+        <img
+          src="/muniba2.png"
+          alt="Second"
+          style={{ width: "30%", borderRadius: "10px" }}
+        />
+        <img
+          src="/muniba3.png"
+          alt="Third"
+          style={{ width: "30%", borderRadius: "10px" }}
+        />
+      </div>
+
+      {/* Generate Video from Paragraph Section */}
       <div
         className="App"
         style={{
@@ -155,7 +189,7 @@ function Story1() {
           </button>
         </form>
 
-        {images.length > 0 && (
+        {Array.isArray(images) && images.length > 0 && (
           <div>
             <strong>
               <h2>Generated Images</h2>
@@ -184,46 +218,12 @@ function Story1() {
               <h2>Generated Video</h2>
             </strong>
             <strong>
-              <p>Click here to see the magic:</p>
+              <p>Click here to view the video:</p>
             </strong>
             <strong>
               <p>
-                <strong>Video URL:</strong>{" "}
                 <a href={videoUrl} target="_blank" rel="noopener noreferrer">
-                  {videoUrl}
-                </a>
-              </p>
-            </strong>
-            {/* Add the link to h.mp4 */}
-            <strong>
-              <p>
-                <strong>Here is your video</strong>{" "}
-                <a href="/h.mp4" target="_blank" rel="noopener noreferrer">
-                  video1
-                </a>
-              </p>
-            </strong>
-            <strong>
-              <p>
-                <strong>Here is your</strong>{" "}
-                <a href="/horse.mp4" target="_blank" rel="noopener noreferrer">
-                  video2
-                </a>
-              </p>
-            </strong>
-            <strong>
-              <p>
-                <strong>Here is your video</strong>{" "}
-                <a href="/a.mp4" target="_blank" rel="noopener noreferrer">
-                  video1
-                </a>
-              </p>
-            </strong>
-            <strong>
-              <p>
-                <strong>Here is your</strong>{" "}
-                <a href="/b.mp4" target="_blank" rel="noopener noreferrer">
-                  video2
+                  View Video Slideshow
                 </a>
               </p>
             </strong>
@@ -231,20 +231,77 @@ function Story1() {
         )}
       </div>
 
-      {/* First YouTube Video and Quiz */}
+      {/* Sample Videos Section */}
+      <h2
+        style={{
+          fontWeight: "bold",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
+        Some of the Sample Videos You Can Enjoy!
+      </h2>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "20px",
+          marginTop: "20px",
+          flexWrap: "wrap",
+        }}
+      >
+        {[
+          "a.mp4",
+          "h.mp4",
+          "b.mp4",
+          "c.mp4",
+          "e.mp4",
+          "horse.mp4",
+          "t.mp4",
+          "l.mp4",
+          "m.mp4",
+        ].map((video, index) => (
+          <video
+            key={index}
+            ref={(el) => (videoRefs.current[index] = el)}
+            controls
+            style={{
+              width: "30%",
+              maxWidth: "300px",
+              borderRadius: "10px",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+            }}
+            onClick={() => handleVideoClick(index)}
+          >
+            <source src={`/${video}`} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ))}
+      </div>
+
+      {/* First Video Section */}
       <strong>
         <h2 style={{ textAlign: "center" }}>The fisherman and his wife</h2>
       </strong>
-      <iframe
-        width="100%"
-        height="315"
-        src="https://www.youtube.com/embed/Y5EL8g2u11M"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        style={{ marginBottom: "20px" }}
-      ></iframe>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <video
+          width="60%"
+          height="auto"
+          controls
+          style={{ marginBottom: "20px" }}
+        >
+          <source src="/ab2.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
 
       <strong>
         <h2 style={{ textAlign: "center" }}>Answer the Questions Below:</h2>
@@ -271,22 +328,29 @@ function Story1() {
         ))}
       </div>
 
-      {/* Second YouTube Video and Quiz */}
+      {/* Second Video Section */}
       <strong>
         <h2 style={{ textAlign: "center" }}>
           The little sparrow's unbreakable will!!
         </h2>
       </strong>
-      <iframe
-        width="100%"
-        height="315"
-        src="https://www.youtube.com/embed/h8dz4yhvYVo"
-        title="YouTube video player"
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        style={{ marginTop: "20px" }}
-      ></iframe>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <video
+          width="60%"
+          height="auto"
+          controls
+          style={{ marginBottom: "20px" }}
+        >
+          <source src="/ab3.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
 
       <strong>
         <h2 style={{ textAlign: "center" }}>Answer the Questions Below:</h2>
@@ -303,10 +367,8 @@ function Story1() {
                   type="radio"
                   name={`question2_${index}`}
                   value={option}
-                  onChange={() =>
-                    handleAnswerChange(index + questions1.length, option)
-                  }
-                  checked={userAnswers[index + questions1.length] === option}
+                  onChange={() => handleAnswerChange(index + 3, option)}
+                  checked={userAnswers[index + 3] === option}
                 />
                 <strong>{option}</strong>
               </label>
@@ -315,35 +377,68 @@ function Story1() {
         ))}
       </div>
 
-      {/* Submit Button */}
-      <button
-        onClick={handleSubmitQuiz}
-        style={{
-          padding: "10px",
-          backgroundColor: "#28a745",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginTop: "20px",
-        }}
-      >
-        <strong>Submit Answers</strong>
-      </button>
+      {/* Submit Quiz Button */}
+      <div style={{ textAlign: "center", marginTop: "30px" }}>
+        <button
+          onClick={handleSubmitQuiz}
+          style={{
+            backgroundColor: "purple",
+            color: "white",
+            padding: "10px 20px",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
+          Submit Quiz
+        </button>
+      </div>
 
-      {/* Show final score if quiz is completed */}
-      {isQuizCompleted && (
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <strong>
-            <h3>
-              Your Total Score for All Quizzes: {calculateScore()}/
-              {questions1.length + questions2.length}
-            </h3>
-          </strong>
+      {/* Quiz Modal */}
+      {showModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: "0",
+            left: "0",
+            right: "0",
+            bottom: "0",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: "999",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "20px",
+              borderRadius: "10px",
+              textAlign: "center",
+              width: "300px",
+            }}
+          >
+            <h2>Your Score: {finalScore} / 6</h2>
+            <button
+              onClick={() => setShowModal(false)}
+              style={{
+                backgroundColor: "purple",
+                color: "white",
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-export default Story1;
+export default App;
