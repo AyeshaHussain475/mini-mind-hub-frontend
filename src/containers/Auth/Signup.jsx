@@ -50,19 +50,13 @@ export default function SignUp() {
   }
 
   const handleSignUp = async () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
-    const validDomains = ["example.com", "myapp.com", "gmail.com"]; // Added gmail.com to valid domains
-    const emailDomain = email.split("@")[1];
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Basic email format validation
 
     if (!emailRegex.test(email)) {
       setEmailError("Please enter a valid email address.");
       return;
     }
 
-    if (!validDomains.includes(emailDomain)) {
-      setEmailError(`Email domain must be one of: ${validDomains.join(", ")}`);
-      return;
-    }
     try {
       const result = await axios.post("signup", {
         firstName,
