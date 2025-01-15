@@ -110,7 +110,7 @@ const Dashboard = () => {
       }}
     >
       {/* Sidebar */}
-      <Drawer
+      {/* <Drawer
         variant="persistent"
         anchor="left"
         open={sidebarOpen}
@@ -144,11 +144,11 @@ const Dashboard = () => {
             </ListItem>
           ))}
         </List>
-      </Drawer>
+      </Drawer> */}
 
       {/* Main Content */}
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" sx={{ backgroundColor: "#8a2be2" }}>
+        {/* <AppBar position="static" sx={{ backgroundColor: "#8a2be2" }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -160,7 +160,7 @@ const Dashboard = () => {
             </IconButton>
             <Typography variant="h6">Admin Dashboard</Typography>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <Container maxWidth="lg" sx={{ marginTop: "2rem" }}>
           <Typography variant="h4" align="center" gutterBottom>
             Admin Dashboard
