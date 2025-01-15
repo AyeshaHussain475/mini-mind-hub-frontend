@@ -125,10 +125,10 @@ export default function SignIn() {
                   InputLabelProps={{ style: { color: "purple" } }}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <FormControlLabel
+                {/* <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
-                />
+                /> */}
                 <Button
                   fullWidth
                   variant="contained"
